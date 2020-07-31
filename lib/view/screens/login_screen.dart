@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:osk_dev_app/view/screens/brand_home_screen.dart';
 import 'package:osk_dev_app/view/screens/register_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 
@@ -9,13 +10,12 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-//Don't have an account ? Register
-//Already have an account ? Login
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -33,72 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _emailPasswordWidget({bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        children: [
-          Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Email id",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: emailEditingController,
-                  decoration: InputDecoration(
-                      hintText: "Enter your Email",
-                      hintStyle: TextStyle(color: Colors.black54),
-                      border: InputBorder.none,
-                      fillColor: Color(0xfff3f3f4),
-                      filled: true),
-                  validator: (val) {
-                    return RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(val)
-                        ? null
-                        : "Enter correct email";
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Password",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  obscureText: isPassword,
-                  controller: passwordEditingController,
-                  decoration: InputDecoration(
-                      hintText: "Enter your Password",
-                      hintStyle: TextStyle(color: Colors.black54),
-                      border: InputBorder.none,
-                      fillColor: Color(0xfff3f3f4),
-                      filled: true),
-                  validator: (val) {
-                    return val.length < 6
-                        ? "Enter Password 6+ characters"
-                        : null;
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -127,6 +61,83 @@ class _LoginScreenState extends State<LoginScreen> {
           fontSize: 20,
           color: textColor,
         ),
+      ),
+    );
+  }
+
+  Widget _emailPasswordWidget({bool isPassword = false}) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        children: [
+          Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Email id",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: emailEditingController,
+                  cursorColor: Color(0xFFFF9B00),
+                  decoration: InputDecoration(
+                      hintText: "Enter your Email",
+                      hintStyle: TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true),
+                  validator: (val) {
+                    return RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(val)
+                        ? null
+                        : "Enter correct email";
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Password",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  obscureText: isPassword,
+                  controller: passwordEditingController,
+                  decoration: InputDecoration(
+                      hintText: "Enter your Password",
+                      hintStyle: TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true),
+                  validator: (val) {
+                    return val.length < 6
+                        ? "Enter Password 6+ characters"
+                        : null;
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -184,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 20,
                     ),
                     InkWell(
-                      onTap: null,
+                      onTap: () => Navigator.pushReplacementNamed(context, BrandHomeScreen.id),
                       child: _authButton(
                         text: 'Login',
                         buttonColor: Color(0xFFFF9B00),

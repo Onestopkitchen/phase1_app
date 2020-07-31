@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:osk_dev_app/view/screens/brand_home_screen.dart';
 import 'package:osk_dev_app/view/screens/login_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 
@@ -64,8 +65,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                       hintText: "Enter Username",
                       hintStyle: TextStyle(color: Colors.black54),
-                      border: InputBorder.none,
-                      fillColor: Color(0xfff3f3f4),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      fillColor: Colors.white,
                       filled: true),
                 ),
                 SizedBox(
@@ -83,8 +89,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                       hintText: "Enter your Email",
                       hintStyle: TextStyle(color: Colors.black54),
-                      border: InputBorder.none,
-                      fillColor: Color(0xfff3f3f4),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      fillColor: Colors.white,
                       filled: true),
                   validator: (val) {
                     return RegExp(
@@ -110,8 +121,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                       hintText: "Enter your Password",
                       hintStyle: TextStyle(color: Colors.black54),
-                      border: InputBorder.none,
-                      fillColor: Color(0xfff3f3f4),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      fillColor: Colors.white,
                       filled: true),
                   validator: (val) {
                     return val.length < 6
@@ -208,7 +224,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 20,
                     ),
                     InkWell(
-                      onTap: null,
+                      onTap: () => Navigator.pushReplacementNamed(
+                          context, BrandHomeScreen.id),
                       child: _authButton(
                         text: 'Register',
                         buttonColor: Color(0xFFFF9B00),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:osk_dev_app/view/screens/brand_home_screen.dart';
 import 'package:osk_dev_app/view/screens/login_screen.dart';
+import 'package:osk_dev_app/view/screens/osk_menu_screen.dart';
 import 'package:osk_dev_app/view/screens/register_screen.dart';
 
 import 'view/screens/welcome_screen.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
@@ -31,6 +34,8 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         RegisterScreen.id: (context) => RegisterScreen(),
+        BrandHomeScreen.id: (context) => BrandHomeScreen(),
+        OskMenuScreen.id: (context) => OskMenuScreen(),
       },
     );
   }

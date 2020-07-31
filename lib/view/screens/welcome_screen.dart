@@ -51,25 +51,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         margin: EdgeInsets.only(top: 40, bottom: 20),
         child: Column(
           children: <Widget>[
-            Text(
-              'Quick login with Touch ID',
-              style: TextStyle(color: Colors.white, fontSize: 17),
-            ),
+//            Text(
+//              'Quick login with Touch ID',
+//              style: TextStyle(color: Color(0xFFFF9B00), fontSize: 17),
+//            ),
             SizedBox(
               height: 20,
             ),
-            Icon(Icons.fingerprint, size: 90, color: Colors.white),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Touch ID',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                decoration: TextDecoration.underline,
-              ),
-            ),
+            Icon(Icons.fingerprint, size: 60, color: Color(0xFFFF9B00)),
+//            SizedBox(
+//              height: 20,
+//            ),
+//            Text(
+//              'Touch ID',
+//              style: TextStyle(
+//                color: Color(0xFFFF9B00),
+//                fontSize: 15,
+//                decoration: TextDecoration.underline,
+//              ),
+//            ),
           ],
         ));
   }
@@ -83,18 +83,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
-                    blurRadius: 5,
-                    spreadRadius: 2)
-              ],
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xfffbb448), Color(0xffe46b10)])),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+          ),
+//              gradient: LinearGradient(
+//                  begin: Alignment.topCenter,
+//                  end: Alignment.bottomCenter,
+//                  colors: [Color(0xfffbb448), Color(0xffe46b10)])),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -121,10 +122,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Navigator.pushNamed(context, RegisterScreen.id);
                 },
                 child: _authButton(
-                    text: 'Register Now',
-                    buttonColor: Color(0xFFFF9B00),
-                    textColor: Colors.white,
-                    border: Border.all(color: Colors.white, width: 2)),
+                  text: 'Register Now',
+                  buttonColor: Color(0xFFFF9B00),
+                  textColor: Colors.white,
+                  // border: Border.all(color: Colors.white, width: 2)
+                ),
               ),
               SizedBox(
                 height: 20,
