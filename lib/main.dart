@@ -12,8 +12,13 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+  //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+//  runApp(
+//    DevicePreview(
+//      enabled: !kReleaseMode,
+//      builder: (context) => MyApp(),
+//    ),
+//  );
   runApp(MyApp());
 }
 

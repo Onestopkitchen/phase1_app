@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:osk_dev_app/view/screens/osk_menu_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 
 class BrandHomeScreen extends StatefulWidget {
@@ -172,6 +173,43 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
     );
   }
 
+  Widget headerSection() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            child: Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+                image: DecorationImage(
+                  scale: 5.0,
+                  image: AssetImage('assets/images/ham_icon.png'),
+                ),
+              ),
+            ),
+            onTap: () => Scaffold.of(context).openDrawer(),
+          ),
+          InkWell(
+            child: Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Icon(Icons.person_outline),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -192,41 +230,7 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              child: Container(
-                                height: 50.0,
-                                width: 50.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  image: DecorationImage(
-                                    scale: 5.0,
-                                    image: AssetImage(
-                                        'assets/images/ham_icon.png'),
-                                  ),
-                                ),
-                              ),
-                              onTap: () => Scaffold.of(context).openDrawer(),
-                            ),
-                            InkWell(
-                              child: Container(
-                                height: 50.0,
-                                width: 50.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                child: Icon(Icons.person_outline),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      headerSection(),
                       SizedBox(
                         height: 10.0,
                       ),
@@ -251,14 +255,17 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 10.0, right: 5.0),
-                              child: HCard(
-                                  start: Color(0xffFA7D82),
-                                  end: Color(0xffFFB295),
-                                  title: 'Osk Products',
-                                  img: 'assets/images/breakfast.png',
-                                  i1: 'Bread',
-                                  i2: 'Peanut butter',
-                                  i3: 'Apple'),
+                              child: InkWell(
+                                onTap: () => null,
+                                child: HCard(
+                                    start: Color(0xffFA7D82),
+                                    end: Color(0xffFFB295),
+                                    title: 'Osk Products',
+                                    img: 'assets/images/breakfast.png',
+                                    i1: 'Bread',
+                                    i2: 'Peanut butter',
+                                    i3: 'Apple'),
+                              ),
                             ),
                             Padding(
                               padding:
@@ -315,11 +322,15 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: VCard(
-                                start: Color(0xfff9d660),
-                                end: Color(0xfffceca8),
-                                title: 'One Stop Kitchen',
-                                img: 'assets/images/logo.png'),
+                            child: InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, OskMenuScreen.id),
+                              child: VCard(
+                                  start: Color(0xfff9d660),
+                                  end: Color(0xfffceca8),
+                                  title: 'One Stop Kitchen',
+                                  img: 'assets/images/logo.png'),
+                            ),
                           ),
                           Padding(
                             padding:
