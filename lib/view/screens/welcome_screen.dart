@@ -29,7 +29,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         border: border,
         boxShadow: <BoxShadow>[
           BoxShadow(
-              color: Color(0xffdf8e33).withAlpha(100),
+              color: Color(0xfff9d660).withAlpha(100),
               offset: Offset(2, 4),
               blurRadius: 8,
               spreadRadius: 2)
@@ -58,7 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             SizedBox(
               height: 20,
             ),
-            Icon(Icons.fingerprint, size: 60, color: Color(0xFFFF9B00)),
+            Icon(Icons.fingerprint, size: 60, color: Color(0xFFf9d660)),
 //            SizedBox(
 //              height: 20,
 //            ),
@@ -111,7 +111,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 child: _authButton(
                   text: 'Login',
                   buttonColor: Colors.white,
-                  textColor: Color(0xFFFF9B00),
+                  textColor: Color(0xFFf9d660),
                 ),
               ),
               SizedBox(
@@ -123,7 +123,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 },
                 child: _authButton(
                   text: 'Register Now',
-                  buttonColor: Color(0xFFFF9B00),
+                  buttonColor: Color(0xFFf9d660), //FF9B00
                   textColor: Colors.white,
                   // border: Border.all(color: Colors.white, width: 2)
                 ),

@@ -1,10 +1,15 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:osk_dev_app/view/screens/brand_home_screen.dart';
-import 'package:osk_dev_app/view/screens/login_screen.dart';
-import 'package:osk_dev_app/view/screens/osk_menu_screen.dart';
-import 'package:osk_dev_app/view/screens/register_screen.dart';
 
+import 'view/screens/brand_home_screen.dart';
+import 'view/screens/cart_screen.dart';
+import 'view/screens/hob_menu_screen.dart';
+import 'view/screens/login_screen.dart';
+import 'view/screens/osk_menu_screen.dart';
+import 'view/screens/register_screen.dart';
+import 'view/screens/splash_screen.dart';
 import 'view/screens/welcome_screen.dart';
 
 Future<void> main() async {
@@ -13,13 +18,13 @@ Future<void> main() async {
     SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
   //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
-//  runApp(
-//    DevicePreview(
-//      enabled: !kReleaseMode,
-//      builder: (context) => MyApp(),
-//    ),
-//  );
-  runApp(MyApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MyApp(),
+    ),
+  );
+  //runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -34,13 +39,16 @@ class MyApp extends StatelessWidget {
 //          bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
 //        ),
 //      ),
-      initialRoute: WelcomeScreen.id,
+      initialRoute: CartScreen.id,
       routes: {
+        SplashScreen.id: (context) => SplashScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         RegisterScreen.id: (context) => RegisterScreen(),
         BrandHomeScreen.id: (context) => BrandHomeScreen(),
         OskMenuScreen.id: (context) => OskMenuScreen(),
+        HobMenuScreen.id: (context) => HobMenuScreen(),
+        CartScreen.id: (context) => CartScreen(),
       },
     );
   }

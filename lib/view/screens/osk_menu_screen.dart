@@ -5,6 +5,8 @@ import 'package:osk_dev_app/model/core/osk_category.dart';
 import 'package:osk_dev_app/model/core/osk_item.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 
+import 'cart_screen.dart';
+
 class OskMenuScreen extends StatefulWidget {
   static String id = 'osk_menu_screen';
   @override
@@ -16,7 +18,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
 
   int _categorySelectedIndex = 0;
   bool isAddToCartSelected = false;
-  Color cartBackgroundColor = Color(0xFFFF9B00);
+  Color cartBackgroundColor = Color(0xFFf9d660);
   Color cartIconColor = Colors.white;
 
   _onCategorySelected(int index) {
@@ -52,7 +54,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
         decoration: BoxDecoration(
           color:
               _categorySelectedIndex != null && _categorySelectedIndex == index
-                  ? Color(0xFFFF9B00)
+                  ? Color(0xFFf9d660)
                   : Colors.white,
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -139,7 +141,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                       Icon(
                         Icons.star,
                         size: 18,
-                        color: Color(0xFFFF9B00),
+                        color: Color(0xFFf9d660),
                       ),
                       Text(
                         "200 times ordered",
@@ -179,7 +181,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                           width: MediaQuery.of(context).size.width * 0.15,
                           height: MediaQuery.of(context).size.height * 0.04,
                           decoration: BoxDecoration(
-                            color: Color(0xFFFF9B00),
+                            color: Color(0xFFf9d660),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: Row(
@@ -264,6 +266,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
             onTap: () => Scaffold.of(context).openDrawer(),
           ),
           InkWell(
+            onTap: () => Navigator.pushNamed(context, CartScreen.id),
             child: Container(
               height: 50.0,
               width: 50.0,
@@ -271,7 +274,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
               ),
-              child: Icon(Icons.person_outline),
+              child: Icon(Icons.shopping_cart),
             ),
           ),
         ],
@@ -330,7 +333,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                             width: MediaQuery.of(context).size.width * 0.80,
                             child: TextField(
                               controller: _searchController,
-                              cursorColor: Color(0xFFFF9B00),
+                              cursorColor: Color(0xFFf9d660),
                               decoration: InputDecoration(
                                 hintText: "Search your food...",
                                 focusedBorder: UnderlineInputBorder(

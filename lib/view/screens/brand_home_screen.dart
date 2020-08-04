@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:osk_dev_app/view/screens/osk_menu_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 
+import 'hob_menu_screen.dart';
+
 class BrandHomeScreen extends StatefulWidget {
   static String id = 'brand_home_screen';
   @override
@@ -335,11 +337,15 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: VCard(
-                                start: Color(0xfff1d884),
-                                end: Color(0xffd3a13c),
-                                title: 'House of Biryani',
-                                img: 'assets/images/HOB.png'),
+                            child: InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, HobMenuScreen.id),
+                              child: VCard(
+                                  start: Color(0xfff1d884),
+                                  end: Color(0xffd3a13c),
+                                  title: 'House of Biryani',
+                                  img: 'assets/images/HOB.png'),
+                            ),
                           ),
                           Padding(
                             padding:
