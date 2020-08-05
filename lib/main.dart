@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'view/screens/brand_home_screen.dart';
 import 'view/screens/cart_screen.dart';
+import 'view/screens/delivery_status_screen.dart';
+import 'view/screens/food_detail_screen.dart';
 import 'view/screens/hob_menu_screen.dart';
 import 'view/screens/login_screen.dart';
 import 'view/screens/osk_menu_screen.dart';
@@ -24,7 +26,7 @@ Future<void> main() async {
       builder: (context) => MyApp(),
     ),
   );
-  //runApp(MyApp());
+//  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
 //          bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
 //        ),
 //      ),
-      initialRoute: CartScreen.id,
+      initialRoute: FoodDetailScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
@@ -49,6 +51,8 @@ class MyApp extends StatelessWidget {
         OskMenuScreen.id: (context) => OskMenuScreen(),
         HobMenuScreen.id: (context) => HobMenuScreen(),
         CartScreen.id: (context) => CartScreen(),
+        FoodDetailScreen.id: (context) => FoodDetailScreen(),
+        DeliveryStatusScreen.id: (context) => DeliveryStatusScreen(),
       },
     );
   }

@@ -169,7 +169,7 @@ class _CartScreenState extends State<CartScreen> {
           Text(
             title,
             style: GoogleFonts.montserrat(
-              fontSize: 14,
+              fontSize: 12,
               color: Colors.black87,
               fontWeight: FontWeight.w400,
             ),
@@ -177,7 +177,7 @@ class _CartScreenState extends State<CartScreen> {
           Text(
             price,
             style: GoogleFonts.montserrat(
-              fontSize: 14,
+              fontSize: 12,
               color: Colors.black87,
               fontWeight: FontWeight.w400,
             ),
