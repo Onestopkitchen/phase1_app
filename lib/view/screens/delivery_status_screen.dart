@@ -1,9 +1,56 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class DeliveryStatusScreen extends StatelessWidget {
+class DeliveryStatusScreen extends StatefulWidget {
   static String id = 'delivery_status_screen';
+
+  @override
+  _DeliveryStatusScreenState createState() => _DeliveryStatusScreenState();
+}
+
+class _DeliveryStatusScreenState extends State<DeliveryStatusScreen> {
+  final Geolocator _geolocator = Geolocator();
+
+  Position _currentPosition;
+
+  CameraPosition _initialLocation =
+      CameraPosition(target: LatLng(26.124737, 91.798388));
+
+  GoogleMapController mapController;
+
+  _getCurrentLocation() async {
+    await _geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
+      setState(() {
+        // Store the position in the variable
+        _currentPosition = position;
+
+        print('CURRENT POS: $_currentPosition');
+
+        // For moving the camera to current location
+        mapController.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(position.latitude, position.longitude),
+              zoom: 18.0,
+            ),
+          ),
+        );
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
 
   Widget orderHeaderSection() {
     return Row(
@@ -62,7 +109,7 @@ class DeliveryStatusScreen extends StatelessWidget {
       child: Icon(
         icon,
         size: 30,
-        color: Colors.orange,
+        color: Color(0xfffec609),
       ),
     );
   }
@@ -99,7 +146,19 @@ class DeliveryStatusScreen extends StatelessWidget {
       child: Scaffold(
         body: Stack(
           children: [
-            Container(color: Colors.redAccent),
+            Container(
+              child: GoogleMap(
+                initialCameraPosition: _initialLocation,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: false,
+                mapType: MapType.normal,
+                zoomGesturesEnabled: true,
+                zoomControlsEnabled: false,
+                onMapCreated: (GoogleMapController controller) {
+                  mapController = controller;
+                },
+              ),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -134,7 +193,7 @@ class DeliveryStatusScreen extends StatelessWidget {
                                 children: [
                                   deliveryIcon(Icons.access_time),
                                   verticalDivider(
-                                      height: 60, color: Colors.orange),
+                                      height: 60, color: Color(0xfffec609)),
                                   verticalDivider(
                                       height: 15, color: Colors.grey),
                                   verticalDivider(
@@ -170,6 +229,28 @@ class DeliveryStatusScreen extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: 30,
+              right: 10,
+              child: ClipOval(
+                child: Material(
+                  color: Colors.orange[100], // button color
+                  child: InkWell(
+                    splashColor: Color(0xfffec609), // inkwell color
+                    child: SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: Icon(Icons.my_location),
+                    ),
+                    onTap: () {
+                      // TODO: Add the operation to be performed
+                      _getCurrentLocation();
+                      // on button tap
+                    },
+                  ),
                 ),
               ),
             ),

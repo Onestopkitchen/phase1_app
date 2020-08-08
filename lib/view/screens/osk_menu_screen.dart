@@ -3,7 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:osk_dev_app/model/core/osk_category.dart';
 import 'package:osk_dev_app/model/core/osk_item.dart';
+import 'package:osk_dev_app/provider/storeProvider.dart';
+import 'package:osk_dev_app/view/screens/food_detail_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
+import 'package:provider/provider.dart';
 
 import 'cart_screen.dart';
 
@@ -18,7 +21,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
 
   int _categorySelectedIndex = 0;
   bool isAddToCartSelected = false;
-  Color cartBackgroundColor = Color(0xFFf9d660);
+  Color cartBackgroundColor = Color(0xfffec609);
   Color cartIconColor = Colors.white;
 
   _onCategorySelected(int index) {
@@ -29,13 +32,16 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
 
   List<OskItem> osk_items = [
     OskItem(
-        title: 'Margerita Pizza', img: 'assets/images/lunch.png', price: '300'),
-    OskItem(title: 'Burger', img: 'assets/images/breakfast.png', price: '250'),
+        title: 'Margerita Pizza',
+        img: 'assets/images/product_1.png',
+        price: '300'),
+    OskItem(title: 'Burger', img: 'assets/images/product_2.png', price: '250'),
     OskItem(
         title: 'Chinese Items Rice Bowl',
-        img: 'assets/images/snack.png',
+        img: 'assets/images/product_1.png',
         price: '150'),
-    OskItem(title: 'Rice Bowl', img: 'assets/images/dinner.png', price: '200'),
+    OskItem(
+        title: 'Rice Bowl', img: 'assets/images/product_2.png', price: '200'),
   ];
 
   List<OskCategory> osk_categories = [
@@ -54,7 +60,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
         decoration: BoxDecoration(
           color:
               _categorySelectedIndex != null && _categorySelectedIndex == index
-                  ? Color(0xFFf9d660)
+                  ? Color(0xfffec609)
                   : Colors.white,
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -132,90 +138,105 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(left: 14.0, top: 20.0),
+              padding: const EdgeInsets.only(left: 14.0, top: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        size: 18,
-                        color: Color(0xFFf9d660),
+                  Expanded(
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            size: 18,
+                            color: Color(0xfffec609),
+                          ),
+                          Text(
+                            "200 times ordered",
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black54,
+                              fontSize: 14,
+                            ),
+                          )
+                        ],
                       ),
-                      Text(
-                        "200 times ordered",
-                        style: GoogleFonts.montserrat(
-                          color: Colors.black54,
-                          fontSize: 14,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.025,
-                  ),
-                  Text(
-                    title,
-                    style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 18.0,
-                        color: Colors.black87),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Text(
-                    "Weight 540gr",
-                    textAlign: TextAlign.end,
-                    style: GoogleFonts.montserrat(
-                      color: Colors.black54,
-                      fontSize: 12.0,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25.0, bottom: 18.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.15,
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFf9d660),
-                            borderRadius: BorderRadius.circular(12.0),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            maxLines: 2,
+                            style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18.0,
+                                color: Colors.black87),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              qtyButton(icon: Icons.remove),
-                              SizedBox(
-                                width: 4.0,
-                              ),
-                              Text(
-                                "4",
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Weight 540gr",
+                            textAlign: TextAlign.end,
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black54,
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            decoration: BoxDecoration(
+                              color: Color(0xfffec609),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                qtyButton(icon: Icons.remove),
+                                SizedBox(
+                                  width: 4.0,
                                 ),
-                              ),
-                              SizedBox(
-                                width: 4.0,
-                              ),
-                              qtyButton(icon: Icons.add),
-                            ],
+                                Text(
+                                  "4",
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 4.0,
+                                ),
+                                qtyButton(icon: Icons.add),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.08,
-                        ),
-                        Text(
-                          "Rs. $price",
-                          textAlign: TextAlign.end,
-                          style: GoogleFonts.montserrat(
-                            color: Colors.black87,
-                            fontSize: 14.0,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.08,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Rs. $price",
+                            textAlign: TextAlign.end,
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black87,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -224,8 +245,8 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
           ),
         ),
         Positioned(
-          right: -20,
-          bottom: -4,
+          right: 0,
+          bottom: -5,
           child: Image.asset(
             img,
             height: MediaQuery.of(context).size.height * 0.30,
@@ -299,6 +320,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
+    var store = Provider.of<MyStore>(context); //listener
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -333,7 +355,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                             width: MediaQuery.of(context).size.width * 0.80,
                             child: TextField(
                               controller: _searchController,
-                              cursorColor: Color(0xFFf9d660),
+                              cursorColor: Color(0xfffec609),
                               decoration: InputDecoration(
                                 hintText: "Search your food...",
                                 focusedBorder: UnderlineInputBorder(
@@ -380,11 +402,24 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: VCard(
-                            index: index,
-                            title: osk_items[index].title,
-                            img: osk_items[index].img,
-                            price: osk_items[index].price),
+                        child: InkWell(
+                          onTap: () {
+//                            Navigator.pushNamed(context, FoodDetailScreen.id,
+//                                arguments: FoodDetailScreen(
+//                                    osk_item: osk_items[index]));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FoodDetailScreen(
+                                          osk_item: osk_items[index],
+                                        )));
+                          },
+                          child: VCard(
+                              index: index,
+                              title: osk_items[index].title,
+                              img: osk_items[index].img,
+                              price: osk_items[index].price),
+                        ),
                       );
                     },
                   ),

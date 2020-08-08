@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:osk_dev_app/model/core/osk_item.dart';
 
 class FoodDetailScreen extends StatefulWidget {
   static String id = 'food_detail_screen';
+  final OskItem osk_item;
+  FoodDetailScreen({Key key, @required this.osk_item}) : super(key: key);
   @override
   _FoodDetailScreenState createState() => _FoodDetailScreenState();
 }
@@ -72,13 +75,17 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
   }
 
   Widget imageSection(String img) {
-    return Container(
-      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-      height: MediaQuery.of(context).size.height * 0.4,
-      decoration: BoxDecoration(
-        color: Color(0xffF8E0B9),
-        shape: BoxShape.circle,
-        image: DecorationImage(fit: BoxFit.scaleDown, image: AssetImage(img)),
+    return Expanded(
+      flex: 2,
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+        height: MediaQuery.of(context).size.height * 0.4,
+        decoration: BoxDecoration(
+          color: Color(0xffF8E0B9),
+          shape: BoxShape.circle,
+          image: DecorationImage(fit: BoxFit.scaleDown, image: AssetImage(img)),
+        ),
       ),
     );
   }
@@ -91,7 +98,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
         width: 50,
         decoration: BoxDecoration(
           color: _sizeSelectedIndex != null && _sizeSelectedIndex == index
-              ? Color(0xFFf9d660)
+              ? Color(0xfffec609)
               : Colors.white30,
           borderRadius: BorderRadius.circular(16.0),
         ),
@@ -114,7 +121,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
       height: 30,
       width: 30,
       decoration: BoxDecoration(
-        color: Color(0xFFf9d660),
+        color: Color(0xfffec609),
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Icon(
@@ -125,109 +132,236 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
     );
   }
 
+  Widget variantsCard({String title}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 120,
+        decoration: BoxDecoration(
+          color: Color(0xfffec609),
+          borderRadius: BorderRadius.circular(18.0),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: GoogleFonts.montserrat(
+                color: Colors.black87,
+                fontSize: 14,
+                fontWeight: FontWeight.w600),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildBottomSheet(BuildContext context) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(left: 10.0, top: 10, bottom: 10, right: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text(
+              "Variants 1",
+              style: GoogleFonts.montserrat(
+                  color: Colors.black87,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          Container(
+            height: 80,
+            child: ListView.builder(
+                itemCount: 6,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return variantsCard(title: "variants $index");
+                }),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text(
+              "Variants 2",
+              style: GoogleFonts.montserrat(
+                  color: Colors.black87,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          Container(
+            height: 80,
+            child: ListView.builder(
+                itemCount: 6,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return variantsCard(title: "variants $index");
+                }),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text(
+              "Variants 3",
+              style: GoogleFonts.montserrat(
+                  color: Colors.black87,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          Container(
+            height: 80,
+            child: ListView.builder(
+                itemCount: 6,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return variantsCard(title: "variants $index");
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            headerSection(context),
-            titleSection("Bacon Burger"),
-            SizedBox(height: 10),
-            descriptionSection(
-                "A Signature flame-grilled beef patty topped with smoked bacon."),
-            SizedBox(height: 20),
-            imageSection("assets/images/HOB.png"),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: Builder(
+          builder: (context) => Container(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
               children: [
-                sizeButton(text: "S", index: 0),
-                sizeButton(text: "M", index: 1),
-                sizeButton(text: "L", index: 2),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                qtyButton(Icons.remove),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: Text(
-                    "2",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 20,
+                SizedBox(
+                  height: 5.0,
+                ),
+                headerSection(context),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    child: Column(
+                      children: [
+                        titleSection(widget.osk_item.title),
+                        descriptionSection(
+                            "A Signature flame-grilled beef patty topped with smoked bacon."),
+                      ],
                     ),
                   ),
                 ),
-                qtyButton(Icons.add),
-              ],
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Price",
-                            style: GoogleFonts.montserrat(
-                              fontSize: 16,
-                              color: Colors.black87,
+                imageSection(widget.osk_item.img),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context, builder: buildBottomSheet);
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Color(0xfffec609),
+                              borderRadius: BorderRadius.circular(16.0),
                             ),
-                          ),
-                          Text(
-                            "Rs.300",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 50,
-                        width: 150,
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFf9d660),
-                            borderRadius: BorderRadius.circular(16.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Icon(Icons.shopping_cart),
-                            Text(
-                              "Go to Cart",
+                            child: Center(
+                                child: Text(
+                              "+ Add Variants",
                               style: GoogleFonts.montserrat(
-                                  fontSize: 16,
                                   color: Colors.black87,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600),
+                            )),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            qtyButton(Icons.remove),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20.0, right: 20.0),
+                              child: Text(
+                                "2",
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
+                            qtyButton(Icons.add),
                           ],
                         ),
-                      ),
-                    ],
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Price",
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 16,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.osk_item.price,
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 16,
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  height: 50,
+                                  width: 150,
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xfffec609),
+                                      borderRadius:
+                                          BorderRadius.circular(16.0)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Icon(Icons.shopping_cart),
+                                      Text(
+                                        "Go to Cart",
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

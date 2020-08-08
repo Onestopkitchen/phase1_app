@@ -114,7 +114,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
                       Icon(
                         Icons.star,
                         size: 18,
-                        color: Color(0xFFf9d660),
+                        color: Color(0xfffec609),
                       ),
                       Text(
                         "200 times ordered",
@@ -154,7 +154,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
                           width: MediaQuery.of(context).size.width * 0.15,
                           height: MediaQuery.of(context).size.height * 0.04,
                           decoration: BoxDecoration(
-                            color: Color(0xFFf9d660),
+                            color: Color(0xfffec609),
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: Row(
@@ -246,7 +246,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
                               width: MediaQuery.of(context).size.width * 0.80,
                               child: TextField(
                                 controller: _searchController,
-                                cursorColor: Color(0xFFf9d660),
+                                cursorColor: Color(0xfffec609),
                                 decoration: InputDecoration(
                                   hintText: "Search your food...",
                                   focusedBorder: UnderlineInputBorder(

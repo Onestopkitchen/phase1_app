@@ -1,3 +1,5 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:osk_dev_app/view/screens/osk_menu_screen.dart';
@@ -12,6 +14,12 @@ class BrandHomeScreen extends StatefulWidget {
 }
 
 class _BrandHomeScreenState extends State<BrandHomeScreen> {
+  final List<String> imgList = [
+    'assets/images/veggies_banner.jpg',
+    'assets/images/chicken_banner.jpg',
+    'assets/images/fruits_banner.jpg',
+  ];
+
   Widget HCard(
       {Color start,
       Color end,
@@ -214,6 +222,25 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> imageSliders = imgList
+        .map(
+          (item) => Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black87 //Hex Color
+                        .withOpacity(0.2),
+                    offset: const Offset(1.8, 4.0),
+                    blurRadius: 9.0),
+              ],
+            ),
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                child: Image.asset(item, fit: BoxFit.cover, width: 1000.0)),
+          ),
+        )
+        .toList();
     final height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
@@ -233,6 +260,16 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                         height: 20.0,
                       ),
                       headerSection(),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      CarouselSlider(
+                        options: CarouselOptions(
+                            autoPlay: true,
+                            aspectRatio: 2.25,
+                            enlargeCenterPage: true),
+                        items: imageSliders,
+                      ),
                       SizedBox(
                         height: 10.0,
                       ),
@@ -355,6 +392,24 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                                 end: Color(0xff92f38e),
                                 title: 'Healthy Co',
                                 img: 'assets/images/Healthyco.png'),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10.0, right: 10.0),
+                            child: VCard(
+                                start: Color(0xfff1d884),
+                                end: Color(0xffd3a13c),
+                                title: 'Dabbaco',
+                                img: 'assets/images/Dabbaco.png'),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10.0, right: 10.0),
+                            child: VCard(
+                                start: Color(0xffc7fa7d),
+                                end: Color(0xff92f38e),
+                                title: 'Osk Plus',
+                                img: 'assets/images/OskPlus.png'),
                           ),
                         ],
                       ),

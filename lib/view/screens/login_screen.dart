@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         border: border,
         boxShadow: <BoxShadow>[
           BoxShadow(
-              color: Color(0xfff9d660).withAlpha(100),
+              color: Color(0xfffec609).withAlpha(100),
               offset: Offset(2, 4),
               blurRadius: 8,
               spreadRadius: 2)
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextFormField(
                   controller: emailEditingController,
-                  cursorColor: Color(0xFFf9d660),
+                  cursorColor: Color(0xfffec609),
                   decoration: InputDecoration(
                       hintText: "Enter your Email",
                       hintStyle: TextStyle(color: Colors.black54),
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Text(
             actionText,
             style: TextStyle(
-                color: Color(0xfff9d660),
+                color: Color(0xfffec609),
                 fontSize: 15,
                 fontWeight: FontWeight.w600),
           ),
@@ -199,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           context, BrandHomeScreen.id),
                       child: _authButton(
                         text: 'Login',
-                        buttonColor: Color(0xFFf9d660),
+                        buttonColor: Color(0xfffec609),
                         textColor: Colors.white,
                       ),
                     ),

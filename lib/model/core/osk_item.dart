@@ -1,7 +1,7 @@
 class OskItem {
-  String title;
-  String img;
-  String price;
+  final String title;
+  final String img;
+  final String price;
 
   OskItem({this.title, this.img, this.price});
 }

@@ -12,11 +12,13 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   List<OskItem> osk_items = [
     OskItem(
-        title: 'Margerita Pizza', img: 'assets/images/lunch.png', price: '300'),
+        title: 'Margerita Pizza',
+        img: 'assets/images/product_1.png',
+        price: '300'),
     OskItem(title: 'Burger', img: 'assets/images/breakfast.png', price: '250'),
     OskItem(
         title: 'Chinese Items Rice Bowl',
-        img: 'assets/images/snack.png',
+        img: 'assets/images/product_2.png',
         price: '150'),
     OskItem(title: 'Rice Bowl', img: 'assets/images/dinner.png', price: '2000'),
   ];
@@ -114,7 +116,7 @@ class _CartScreenState extends State<CartScreen> {
                       width: MediaQuery.of(context).size.width * 0.15,
                       height: MediaQuery.of(context).size.height * 0.04,
                       decoration: BoxDecoration(
-                        color: Color(0xFFf9d660),
+                        color: Color(0xfffec609),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Row(
@@ -313,7 +315,7 @@ class _CartScreenState extends State<CartScreen> {
                       Icon(
                         Icons.local_play,
                         size: 16,
-                        color: Color(0xFFf9d660),
+                        color: Color(0xfffec609),
                       ),
                       Text(
                         "Apply Coupons",
@@ -372,7 +374,7 @@ class _CartScreenState extends State<CartScreen> {
                         height: 50,
                         width: 180,
                         decoration: BoxDecoration(
-                          color: Color(0xFFf9d660),
+                          color: Color(0xfffec609),
                           borderRadius: BorderRadius.circular(16.0),
                         ),
                         child: Center(
