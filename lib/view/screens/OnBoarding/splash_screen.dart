@@ -1,6 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:osk_dev_app/view/screens/welcome_screen.dart';
+
+import 'file:///E:/ONE_STOP_KITCHEN/osk_dev_app/lib/view/screens/OnBoarding/welcome_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   String _animationName = "loading";

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "152589858431",
+    "firebase_url": "https://one-stop-kitchen-app.firebaseio.com",
+    "project_id": "one-stop-kitchen-app",
+    "storage_bucket": "one-stop-kitchen-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152589858431:android:daf44c08d556c79150b14a",
+        "android_client_info": {
+          "package_name": "com.osk_dev_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152589858431-845aegt55os36joevfgun0vtfrt2lsbv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.osk_dev_app",
+            "certificate_hash": "2673fa547efb247d14adddffea6972ba23a06357"
+          }
+        },
+        {
+          "client_id": "152589858431-rko3nt373a6fu8ao8qatahf6ivq9j1u7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHW5Lr-uhkQkEClGZJSe9pm82pxO8bZk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152589858431-rko3nt373a6fu8ao8qatahf6ivq9j1u7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

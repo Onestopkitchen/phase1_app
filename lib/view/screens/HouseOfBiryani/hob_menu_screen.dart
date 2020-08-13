@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:osk_dev_app/model/core/hob_item.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 
-import 'cart_screen.dart';
+import '../cart_screen.dart';
 
 class HobMenuScreen extends StatefulWidget {
   static String id = 'hob_menu_screen';

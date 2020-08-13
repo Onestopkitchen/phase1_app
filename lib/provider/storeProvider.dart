@@ -54,4 +54,45 @@ class MyStore extends ChangeNotifier {
   List<Product> get products => _products;
   List<Product> get cartProducts => _cartProducts;
   Product get activeProduct => _activeProduct;
+
+  setActiveProduct(Product p) {
+    _activeProduct = p;
+  }
+
+  //method to add or remove object from cart
+  addProductToCart(Product p) {
+    //Step 1 : Check if active product is already in cart. If that
+    //is the case then just increment the qty property by 1.
+
+    Product found = _cartProducts.firstWhere((element) => element.id == p.id,
+        orElse: () => null);
+    if (found != null) {
+      found.qty += 1;
+    } else {
+      _cartProducts.add(p);
+    }
+    notifyListeners();
+  }
+
+  removeProductToCart(Product p) {
+    //Step 1 : Check if active product is already in cart. If that
+    //is the case then just increment the qty property by 1.
+
+    Product found = _cartProducts.firstWhere((element) => element.id == p.id,
+        orElse: () => null);
+    if (found != null && found.qty == 1) {
+      _cartProducts.remove(p);
+    } else {
+      found.qty -= 1;
+    }
+    notifyListeners();
+  }
+
+  getBasketQty() {
+    int total = 0;
+    for (int i = 0; i < _cartProducts.length; i++) {
+      total += _cartProducts[i].qty;
+    }
+    return total;
+  }
 }

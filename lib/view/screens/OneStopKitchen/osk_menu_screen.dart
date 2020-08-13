@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:osk_dev_app/model/core/osk_category.dart';
-import 'package:osk_dev_app/model/core/osk_item.dart';
 import 'package:osk_dev_app/provider/storeProvider.dart';
-import 'package:osk_dev_app/view/screens/food_detail_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 import 'package:provider/provider.dart';
 
-import 'cart_screen.dart';
+import '../cart_screen.dart';
+import '../food_detail_screen.dart';
 
 class OskMenuScreen extends StatefulWidget {
   static String id = 'osk_menu_screen';
@@ -29,20 +28,6 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
       _categorySelectedIndex = index;
     });
   }
-
-  List<OskItem> osk_items = [
-    OskItem(
-        title: 'Margerita Pizza',
-        img: 'assets/images/product_1.png',
-        price: '300'),
-    OskItem(title: 'Burger', img: 'assets/images/product_2.png', price: '250'),
-    OskItem(
-        title: 'Chinese Items Rice Bowl',
-        img: 'assets/images/product_1.png',
-        price: '150'),
-    OskItem(
-        title: 'Rice Bowl', img: 'assets/images/product_2.png', price: '200'),
-  ];
 
   List<OskCategory> osk_categories = [
     OskCategory(title: 'Pizza', img: 'assets/images/lunch.png'),
@@ -117,7 +102,13 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
     );
   }
 
-  Widget VCard({int index, String title, String img, String price}) {
+  Widget VCard(
+      {int index,
+      String title,
+      String img,
+      double price,
+      int qty,
+      MyStore store}) {
     return Stack(
       children: [
         Padding(
@@ -207,12 +198,18 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                qtyButton(icon: Icons.remove),
+                                InkWell(
+                                    onTap: () {
+                                      //remove product from cart based on qty
+                                      store.removeProductToCart(
+                                          store.products[index]);
+                                    },
+                                    child: qtyButton(icon: Icons.remove)),
                                 SizedBox(
                                   width: 4.0,
                                 ),
                                 Text(
-                                  "4",
+                                  qty.toString(),
                                   style: GoogleFonts.montserrat(
                                     color: Colors.white,
                                   ),
@@ -220,7 +217,13 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                                 SizedBox(
                                   width: 4.0,
                                 ),
-                                qtyButton(icon: Icons.add),
+                                InkWell(
+                                    onTap: () {
+                                      //add product to cart
+                                      store.addProductToCart(
+                                          store.products[index]);
+                                    },
+                                    child: qtyButton(icon: Icons.add)),
                               ],
                             ),
                           ),
@@ -247,10 +250,13 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
         Positioned(
           right: 0,
           bottom: -5,
-          child: Image.asset(
-            img,
-            height: MediaQuery.of(context).size.height * 0.30,
-            width: MediaQuery.of(context).size.width * 0.35,
+          child: Hero(
+            tag: store.products[index].id,
+            child: Image.asset(
+              img,
+              height: MediaQuery.of(context).size.height * 0.30,
+              width: MediaQuery.of(context).size.width * 0.35,
+            ),
           ),
         ),
       ],
@@ -396,7 +402,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                   ),
                   showText('Popular', 18),
                   ListView.builder(
-                    itemCount: osk_items.length,
+                    itemCount: store.products.length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
@@ -404,21 +410,19 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                         child: InkWell(
                           onTap: () {
-//                            Navigator.pushNamed(context, FoodDetailScreen.id,
-//                                arguments: FoodDetailScreen(
-//                                    osk_item: osk_items[index]));
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FoodDetailScreen(
-                                          osk_item: osk_items[index],
-                                        )));
+                            //TODO: Try to implement in pushNamed way
+                            //Setting the active product
+                            store.setActiveProduct(store.products[index]);
+                            //Moving to detail page
+                            Navigator.pushNamed(context, FoodDetailScreen.id);
                           },
                           child: VCard(
                               index: index,
-                              title: osk_items[index].title,
-                              img: osk_items[index].img,
-                              price: osk_items[index].price),
+                              store: store,
+                              title: store.products[index].name,
+                              img: store.products[index].img,
+                              price: store.products[index].price,
+                              qty: store.products[index].qty),
                         ),
                       );
                     },

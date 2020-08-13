@@ -2,10 +2,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/view/screens/osk_menu_screen.dart';
+import 'package:osk_dev_app/model/services/authService.dart';
+import 'package:osk_dev_app/view/screens/Authentication/login_screen.dart';
+import 'package:osk_dev_app/view/screens/HealthyCo/healthy_co_goal_screen.dart';
+import 'package:osk_dev_app/view/screens/OSKPlus/osk_plus_category_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
+import 'package:provider/provider.dart';
 
-import 'hob_menu_screen.dart';
+import 'file:///E:/ONE_STOP_KITCHEN/osk_dev_app/lib/view/screens/OneStopKitchen/osk_menu_screen.dart';
+
+import '../HouseOfBiryani/hob_menu_screen.dart';
 
 class BrandHomeScreen extends StatefulWidget {
   static String id = 'brand_home_screen';
@@ -19,6 +25,16 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
     'assets/images/chicken_banner.jpg',
     'assets/images/fruits_banner.jpg',
   ];
+
+  logoutUser(context) async {
+    try {
+      final auth = Provider.of<AuthService>(context, listen: true);  //TODO: Check this out
+      bool isLoggedOut = await auth.logoutUserRequest();
+      isLoggedOut ? Navigator.pushNamed(context, LoginScreen.id) : null;
+    } catch (err) {
+      print("UI Logout error: ${err}");
+    }
+  }
 
   Widget HCard(
       {Color start,
@@ -205,6 +221,9 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
             onTap: () => Scaffold.of(context).openDrawer(),
           ),
           InkWell(
+            onTap: () {
+              logoutUser(context);
+            },
             child: Container(
               height: 50.0,
               width: 50.0,
@@ -387,11 +406,15 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: VCard(
-                                start: Color(0xffc7fa7d),
-                                end: Color(0xff92f38e),
-                                title: 'Healthy Co',
-                                img: 'assets/images/Healthyco.png'),
+                            child: InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, HealthyCoGoalScreen.id),
+                              child: VCard(
+                                  start: Color(0xffc7fa7d),
+                                  end: Color(0xff92f38e),
+                                  title: 'Healthy Co',
+                                  img: 'assets/images/Healthyco.png'),
+                            ),
                           ),
                           Padding(
                             padding:
@@ -405,11 +428,15 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: VCard(
-                                start: Color(0xffc7fa7d),
-                                end: Color(0xff92f38e),
-                                title: 'Osk Plus',
-                                img: 'assets/images/OskPlus.png'),
+                            child: InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, OskPlusCategoryScreen.id),
+                              child: VCard(
+                                  start: Color(0xffc7fa7d),
+                                  end: Color(0xff92f38e),
+                                  title: 'Osk Plus',
+                                  img: 'assets/images/OskPlus.png'),
+                            ),
                           ),
                         ],
                       ),

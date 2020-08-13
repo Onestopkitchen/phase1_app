@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/model/core/osk_item.dart';
+import 'package:osk_dev_app/provider/storeProvider.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
   static String id = 'cart_screen';
@@ -10,19 +11,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<OskItem> osk_items = [
-    OskItem(
-        title: 'Margerita Pizza',
-        img: 'assets/images/product_1.png',
-        price: '300'),
-    OskItem(title: 'Burger', img: 'assets/images/breakfast.png', price: '250'),
-    OskItem(
-        title: 'Chinese Items Rice Bowl',
-        img: 'assets/images/product_2.png',
-        price: '150'),
-    OskItem(title: 'Rice Bowl', img: 'assets/images/dinner.png', price: '2000'),
-  ];
-
   TextEditingController _couponController = TextEditingController();
 
   Widget headerSection(BuildContext context) {
@@ -75,7 +63,13 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget VOrderCard({String title, String img, String price}) {
+  Widget VOrderCard(
+      {int index,
+      String title,
+      String img,
+      double price,
+      int qty,
+      MyStore store}) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.145,
       padding:
@@ -122,12 +116,18 @@ class _CartScreenState extends State<CartScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          qtyButton(icon: Icons.remove),
+                          InkWell(
+                              onTap: () {
+                                //remove product from cart based on qty
+                                store
+                                    .removeProductToCart(store.products[index]);
+                              },
+                              child: qtyButton(icon: Icons.remove)),
                           SizedBox(
                             width: 4.0,
                           ),
                           Text(
-                            "4",
+                            qty.toString(),
                             style: GoogleFonts.montserrat(
                               color: Colors.white,
                             ),
@@ -135,7 +135,12 @@ class _CartScreenState extends State<CartScreen> {
                           SizedBox(
                             width: 4.0,
                           ),
-                          qtyButton(icon: Icons.add),
+                          InkWell(
+                              onTap: () {
+                                //add product to cart
+                                store.addProductToCart(store.products[index]);
+                              },
+                              child: qtyButton(icon: Icons.add)),
                         ],
                       ),
                     ),
@@ -248,6 +253,7 @@ class _CartScreenState extends State<CartScreen> {
           height: 20,
         ),
         FlatButton(
+          onPressed: null,
           child: Text(
             "Cancel",
             style: GoogleFonts.montserrat(
@@ -263,6 +269,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var store = Provider.of<MyStore>(context); //listener
     final _height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
@@ -282,12 +289,16 @@ class _CartScreenState extends State<CartScreen> {
                   bottomRight: Radius.circular(16.0),
                 )),
                 child: ListView.separated(
-                  itemCount: osk_items.length,
+                  itemCount: store.cartProducts.length,
                   itemBuilder: (_, index) {
                     return VOrderCard(
-                        title: osk_items[index].title,
-                        img: osk_items[index].img,
-                        price: osk_items[index].price);
+                      index: index,
+                      title: store.cartProducts[index].name,
+                      img: store.cartProducts[index].img,
+                      price: store.cartProducts[index].price,
+                      qty: store.cartProducts[index].qty,
+                      store: store,
+                    );
                   },
                   separatorBuilder: (_, index) => Divider(
                     indent: 20,

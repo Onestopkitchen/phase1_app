@@ -1,8 +1,8 @@
 class User {
   String name;
   String email;
-  int phone;
-  int id;
+  String phone;
+  String id;
 
   User({this.name, this.email, this.phone, this.id});
 

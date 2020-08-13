@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:osk_dev_app/view/screens/login_screen.dart';
-import 'package:osk_dev_app/view/screens/register_screen.dart';
+
+import 'file:///E:/ONE_STOP_KITCHEN/osk_dev_app/lib/view/screens/Authentication/login_screen.dart';
+import 'file:///E:/ONE_STOP_KITCHEN/osk_dev_app/lib/view/screens/Authentication/register_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/provider/storeProvider.dart';
 import 'package:osk_dev_app/view/screens/cart_screen.dart';
-import 'package:provider/provider.dart';
 
-class FoodDetailScreen extends StatefulWidget {
-  static String id = 'food_detail_screen';
+class OskPlusDetailScreen extends StatefulWidget {
+  static String id = 'osk_plus_detail_screen';
   @override
-  _FoodDetailScreenState createState() => _FoodDetailScreenState();
+  _OskPlusDetailScreenState createState() => _OskPlusDetailScreenState();
 }
 
-class _FoodDetailScreenState extends State<FoodDetailScreen> {
+class _OskPlusDetailScreenState extends State<OskPlusDetailScreen> {
   int _sizeSelectedIndex = 0;
 
   _onSizeSelected(int index) {
@@ -74,21 +72,17 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
     );
   }
 
-  Widget imageSection(String img, int id) {
+  Widget imageSection(String img) {
     return Expanded(
       flex: 2,
-      child: Hero(
-        tag: id,
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-          height: MediaQuery.of(context).size.height * 0.4,
-          decoration: BoxDecoration(
-            color: Color(0xffF8E0B9),
-            shape: BoxShape.circle,
-            image:
-                DecorationImage(fit: BoxFit.scaleDown, image: AssetImage(img)),
-          ),
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+        height: MediaQuery.of(context).size.height * 0.4,
+        decoration: BoxDecoration(
+          color: Color(0xffF8E0B9),
+          shape: BoxShape.circle,
+          image: DecorationImage(fit: BoxFit.scaleDown, image: AssetImage(img)),
         ),
       ),
     );
@@ -214,7 +208,6 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var store = Provider.of<MyStore>(context); //listener
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -232,13 +225,13 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                   child: Container(
                     child: Column(
                       children: [
-                        titleSection(store.activeProduct.name),
-                        descriptionSection(store.activeProduct.description),
+                        titleSection("Banana"),
+                        descriptionSection("Tasty Fruit"),
                       ],
                     ),
                   ),
                 ),
-                imageSection(store.activeProduct.img, store.activeProduct.id),
+                imageSection("assets/images/banana.png"),
                 Expanded(
                   flex: 2,
                   child: Container(
@@ -281,11 +274,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                               child: IconButton(
-                                onPressed: () {
-                                  //remove product from cart based on qty
-                                  store
-                                      .removeProductToCart(store.activeProduct);
-                                },
+                                onPressed: null,
                                 icon: Icon(
                                   Icons.remove,
                                   size: 14,
@@ -297,7 +286,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                               padding: const EdgeInsets.only(
                                   left: 20.0, right: 20.0),
                               child: Text(
-                                store.activeProduct.qty.toString(),
+                                "0",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 20,
                                 ),
@@ -311,10 +300,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                               child: IconButton(
-                                onPressed: () {
-                                  //add product to cart
-                                  store.addProductToCart(store.activeProduct);
-                                },
+                                onPressed: null,
                                 icon: Icon(
                                   Icons.add,
                                   size: 14,
@@ -345,7 +331,7 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
                                       ),
                                     ),
                                     Text(
-                                      store.activeProduct.price.toString(),
+                                      "Rs. 120",
                                       style: GoogleFonts.montserrat(
                                           fontSize: 16,
                                           color: Colors.black87,
