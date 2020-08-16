@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/model/core/hob_item.dart';
+import 'package:osk_dev_app/provider/prodProvider.dart';
+import 'package:osk_dev_app/view/screens/food_detail_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
-
-import '../cart_screen.dart';
+import 'package:provider/provider.dart';
 
 class HobMenuScreen extends StatefulWidget {
   static String id = 'hob_menu_screen';
@@ -13,16 +14,6 @@ class HobMenuScreen extends StatefulWidget {
 
 class _HobMenuScreenState extends State<HobMenuScreen> {
   TextEditingController _searchController = TextEditingController();
-  List<HobItem> hob_items = [
-    HobItem(
-        title: 'Margerita Pizza', img: 'assets/images/lunch.png', price: '300'),
-    HobItem(title: 'Burger', img: 'assets/images/breakfast.png', price: '250'),
-    HobItem(
-        title: 'Chinese Items Rice Bowl',
-        img: 'assets/images/snack.png',
-        price: '150'),
-    HobItem(title: 'Rice Bowl', img: 'assets/images/dinner.png', price: '200'),
-  ];
 
   Widget qtyButton({IconData icon}) {
     return Icon(
@@ -54,7 +45,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
             onTap: () => Scaffold.of(context).openDrawer(),
           ),
           InkWell(
-            onTap: () => Navigator.pushNamed(context, CartScreen.id),
+            //   onTap: () => Navigator.pushNamed(context, CartScreen.id),
             child: Container(
               height: 50.0,
               width: 50.0,
@@ -84,7 +75,15 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
     );
   }
 
-  Widget VCard({int index, String title, String img, String price}) {
+  Widget VCard(
+      {int index,
+      String title,
+      String img,
+      int price,
+      int qty,
+      int weight,
+      int timesOrdered,
+      ProdProvider prod}) {
     return Stack(
       children: [
         Padding(
@@ -117,7 +116,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
                         color: Color(0xfffec609),
                       ),
                       Text(
-                        "200 times ordered",
+                        "$timesOrdered times ordered",
                         style: GoogleFonts.montserrat(
                           color: Colors.black54,
                           fontSize: 14,
@@ -139,7 +138,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
                     height: 5.0,
                   ),
                   Text(
-                    "Weight 540gr",
+                    "Weight $weight gr",
                     textAlign: TextAlign.end,
                     style: GoogleFonts.montserrat(
                       color: Colors.black54,
@@ -160,20 +159,32 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              qtyButton(icon: Icons.remove),
+                              InkWell(
+                                  onTap: () {
+                                    prod.removeProductFromCart(
+                                        prod.hobProducts[index]);
+                                  },
+                                  child: qtyButton(icon: Icons.remove)),
                               SizedBox(
                                 width: 4.0,
                               ),
-                              Text(
-                                "4",
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
+                              Consumer<ProdProvider>(
+                                builder: (_, prod, child) => Text(
+                                  prod.hobProducts[index].qty.toString(),
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                               SizedBox(
                                 width: 4.0,
                               ),
-                              qtyButton(icon: Icons.add),
+                              InkWell(
+                                  onTap: () {
+                                    prod.addProductToCart(
+                                        prod.hobProducts[index]);
+                                  },
+                                  child: qtyButton(icon: Icons.add)),
                             ],
                           ),
                         ),
@@ -197,10 +208,11 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
           ),
         ),
         Positioned(
-          right: -20,
-          bottom: -4,
-          child: Image.asset(
-            img,
+          right: 0,
+          bottom: -5,
+          child: CachedNetworkImage(
+            imageUrl:
+                'http://api.onestopkitchen.in/upload/featured_image/$img.png',
             height: MediaQuery.of(context).size.height * 0.30,
             width: MediaQuery.of(context).size.width * 0.35,
           ),
@@ -212,6 +224,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
+    var prodHob = Provider.of<ProdProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -264,20 +277,46 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
                       ),
                     ),
                     showText('Popular', 18),
-                    ListView.builder(
-                      itemCount: hob_items.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding:
-                              const EdgeInsets.only(left: 10.0, right: 10.0),
-                          child: VCard(
-                              index: index,
-                              title: hob_items[index].title,
-                              img: hob_items[index].img,
-                              price: hob_items[index].price),
-                        );
+                    FutureBuilder(
+                      future: prodHob.getTenHobProducts(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          return ListView.builder(
+                            itemCount: prodHob.hobProducts.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 10.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    prodHob
+                                        .setActiveProduct(snapshot.data[index]);
+                                    Navigator.pushNamed(
+                                        context, FoodDetailScreen.id);
+                                  },
+                                  child: VCard(
+                                    index: index,
+                                    title: '${snapshot.data[index].name}',
+                                    price: snapshot.data[index].price,
+                                    qty: snapshot.data[index].qty,
+                                    weight: snapshot.data[index].weight,
+                                    timesOrdered:
+                                        snapshot.data[index].timesOrdered,
+                                    prod: prodHob,
+                                    img: snapshot.data[index].img,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
                       },
                     ),
                   ],

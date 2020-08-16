@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/provider/storeProvider.dart';
+import 'package:osk_dev_app/provider/prodProvider.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -67,9 +68,9 @@ class _CartScreenState extends State<CartScreen> {
       {int index,
       String title,
       String img,
-      double price,
+      int price,
       int qty,
-      MyStore store}) {
+      ProdProvider prodCart}) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.145,
       padding:
@@ -77,13 +78,12 @@ class _CartScreenState extends State<CartScreen> {
       child: Row(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.20,
-            width: MediaQuery.of(context).size.width * 0.20,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(img),
-              ),
+            child: CachedNetworkImage(
+              imageUrl:
+                  'http://api.onestopkitchen.in/upload/featured_image/$img.png',
+              fit: BoxFit.cover,
+              height: MediaQuery.of(context).size.height * 0.20,
+              width: MediaQuery.of(context).size.width * 0.20,
             ),
           ),
           SizedBox(
@@ -119,17 +119,19 @@ class _CartScreenState extends State<CartScreen> {
                           InkWell(
                               onTap: () {
                                 //remove product from cart based on qty
-                                store
-                                    .removeProductToCart(store.products[index]);
+                                prodCart.removeProductFromCart(
+                                    prodCart.cartProducts[index]); //Testing
                               },
                               child: qtyButton(icon: Icons.remove)),
                           SizedBox(
                             width: 4.0,
                           ),
-                          Text(
-                            qty.toString(),
-                            style: GoogleFonts.montserrat(
-                              color: Colors.white,
+                          Consumer<ProdProvider>(
+                            builder: (_, prodCart, child) => Text(
+                              qty.toString(),
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -138,7 +140,8 @@ class _CartScreenState extends State<CartScreen> {
                           InkWell(
                               onTap: () {
                                 //add product to cart
-                                store.addProductToCart(store.products[index]);
+                                prodCart.addProductToCart(
+                                    prodCart.cartProducts[index]);
                               },
                               child: qtyButton(icon: Icons.add)),
                         ],
@@ -269,7 +272,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var store = Provider.of<MyStore>(context); //listener
+    var prodCart = Provider.of<ProdProvider>(context);
     final _height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
@@ -289,15 +292,15 @@ class _CartScreenState extends State<CartScreen> {
                   bottomRight: Radius.circular(16.0),
                 )),
                 child: ListView.separated(
-                  itemCount: store.cartProducts.length,
+                  itemCount: prodCart.cartProducts.length,
                   itemBuilder: (_, index) {
                     return VOrderCard(
                       index: index,
-                      title: store.cartProducts[index].name,
-                      img: store.cartProducts[index].img,
-                      price: store.cartProducts[index].price,
-                      qty: store.cartProducts[index].qty,
-                      store: store,
+                      title: prodCart.cartProducts[index].name,
+                      img: prodCart.cartProducts[index].img,
+                      price: prodCart.cartProducts[index].price,
+                      qty: prodCart.cartProducts[index].qty,
+                      prodCart: prodCart,
                     );
                   },
                   separatorBuilder: (_, index) => Divider(

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:osk_dev_app/view/screens/HealthyCo/healthy_co_dashboard.dart';
 import 'package:osk_dev_app/view/widgets/customClipper.dart';
 
 class HealthyCoPlanDetails extends StatefulWidget {
@@ -265,7 +266,8 @@ class _HealthyCoPlanDetailsState extends State<HealthyCoPlanDetails> {
                         ),
                       ),
                       InkWell(
-                        onTap: () => null,
+                        onTap: () => () =>
+                            Navigator.pushNamed(context, HealthyCoDashboard.id),
                         child: Container(
                           height: 40,
                           width: 100,

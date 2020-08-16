@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 
-import 'file:///E:/ONE_STOP_KITCHEN/osk_dev_app/lib/view/screens/OSKPlus/osk_plus_item_screen.dart';
-
-import '../cart_screen.dart';
-
 class OskPlusCategoryScreen extends StatefulWidget {
   static String id = 'osk_plus_category_screen';
   @override
@@ -35,7 +31,7 @@ class _OskPlusCategoryScreenState extends State<OskPlusCategoryScreen> {
             onTap: () => Scaffold.of(context).openDrawer(),
           ),
           InkWell(
-            onTap: () => Navigator.pushNamed(context, CartScreen.id),
+            //  onTap: () => Navigator.pushNamed(context, CartScreen.id),
             child: Container(
               height: 50.0,
               width: 50.0,
@@ -67,7 +63,7 @@ class _OskPlusCategoryScreenState extends State<OskPlusCategoryScreen> {
 
   Widget categoriesCard({String img, String title, String subtitle}) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, OskPlusItemScreen.id),
+      //onTap: () => Navigator.pushNamed(context, OskPlusItemScreen.id),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 4,

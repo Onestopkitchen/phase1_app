@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:osk_dev_app/provider/prodProvider.dart';
 import 'package:osk_dev_app/view/screens/HealthyCo/healthy_co_dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/services/authService.dart';
-import 'provider/storeProvider.dart';
 import 'view/screens/Authentication/login_screen.dart';
 import 'view/screens/Authentication/register_screen.dart';
 import 'view/screens/HealthyCo/healthy_co_auth.dart';
@@ -36,7 +36,7 @@ Future<void> main() async {
 //  runApp(
 //    DevicePreview(
 //      enabled: !kReleaseMode,
-//      builder: (context) => MyApp(),
+//      builder: (context) => MyApp(prefs),
 //    ),
 //  );
   runApp(MyApp(prefs));
@@ -54,14 +54,14 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(
           create: (context) => AuthService(),
         ),
-        Provider<MyStore>(
-          create: (context) => MyStore(),
+        ChangeNotifierProvider<ProdProvider>(
+          create: (context) => ProdProvider(),
         ),
       ],
       child: MaterialApp(
         title: 'One Stop Kitchen',
         debugShowCheckedModeBanner: false,
-        initialRoute: userInfo == null ? LoginScreen.id : BrandHomeScreen.id,
+        initialRoute: userInfo == null ? WelcomeScreen.id : BrandHomeScreen.id,
         routes: {
           SplashScreen.id: (context) => SplashScreen(),
           WelcomeScreen.id: (context) => WelcomeScreen(),

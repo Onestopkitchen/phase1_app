@@ -28,9 +28,12 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
 
   logoutUser(context) async {
     try {
-      final auth = Provider.of<AuthService>(context, listen: true);  //TODO: Check this out
+      final auth = Provider.of<AuthService>(context,
+          listen: false); //TODO: Check this out
       bool isLoggedOut = await auth.logoutUserRequest();
-      isLoggedOut ? Navigator.pushNamed(context, LoginScreen.id) : null;
+      isLoggedOut
+          ? Navigator.pushReplacementNamed(context, LoginScreen.id)
+          : null;
     } catch (err) {
       print("UI Logout error: ${err}");
     }

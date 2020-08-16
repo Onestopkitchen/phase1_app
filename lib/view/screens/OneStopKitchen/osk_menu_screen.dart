@@ -1,13 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/model/core/osk_category.dart';
-import 'package:osk_dev_app/provider/storeProvider.dart';
+import 'package:osk_dev_app/model/core/Category.dart';
+import 'package:osk_dev_app/provider/prodProvider.dart';
+import 'package:osk_dev_app/view/screens/food_detail_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 import 'package:provider/provider.dart';
-
-import '../cart_screen.dart';
-import '../food_detail_screen.dart';
 
 class OskMenuScreen extends StatefulWidget {
   static String id = 'osk_menu_screen';
@@ -18,85 +17,72 @@ class OskMenuScreen extends StatefulWidget {
 class _OskMenuScreenState extends State<OskMenuScreen> {
   TextEditingController _searchController = TextEditingController();
 
-  int _categorySelectedIndex = 0;
-  bool isAddToCartSelected = false;
-  Color cartBackgroundColor = Color(0xfffec609);
-  Color cartIconColor = Colors.white;
-
-  _onCategorySelected(int index) {
-    setState(() {
-      _categorySelectedIndex = index;
-    });
-  }
-
-  List<OskCategory> osk_categories = [
-    OskCategory(title: 'Pizza', img: 'assets/images/lunch.png'),
-    OskCategory(title: 'Burgers', img: 'assets/images/breakfast.png'),
-    OskCategory(title: 'Chinese', img: 'assets/images/snack.png'),
-    OskCategory(title: 'Rice Bowls', img: 'assets/images/dinner.png'),
+  List<Category> _categories = [
+    Category(title: 'Popular', img: 'assets/images/snack.png'),
+    Category(title: 'Biryani', img: 'assets/images/lunch.png'),
+    Category(title: 'Rice', img: 'assets/images/breakfast.png'),
+    Category(title: 'Chicken', img: 'assets/images/snack.png'),
   ];
 
   //TODO : Implement Provider in Categories section while selecting because setSate is not useful because it rebuilds the widget tree.
-  Widget HCard({int index, String title, String img}) {
+  Widget HCard({int index, String title, String img, ProdProvider prod}) {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 5.0),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.3,
-        decoration: BoxDecoration(
-          color:
-              _categorySelectedIndex != null && _categorySelectedIndex == index
-                  ? Color(0xfffec609)
-                  : Colors.white,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.black //Hex Color
-                    .withOpacity(0.4),
-                offset: const Offset(1.1, 4.0),
-                blurRadius: 6.0),
-          ],
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Image.asset(
-              img,
-              height: MediaQuery.of(context).size.height * 0.12,
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              title,
-              style: GoogleFonts.montserrat(
-                  color: _categorySelectedIndex != null &&
-                          _categorySelectedIndex == index
-                      ? Colors.white
-                      : Colors.black,
-                  fontSize: 16.0),
-            ),
-            SizedBox(
-              height: 7.0,
-            ),
-            CircleAvatar(
-              maxRadius: 15.0,
-              backgroundColor: _categorySelectedIndex != null &&
-                      _categorySelectedIndex == index
-                  ? Colors.white
-                  : Colors.redAccent,
-              child: Icon(
-                Icons.arrow_forward_ios,
-                size: 15.0,
-                color: _categorySelectedIndex != null &&
-                        _categorySelectedIndex == index
-                    ? Colors.black
-                    : Colors.white,
+      child: Consumer<ProdProvider>(
+        builder: (_, prod, child) => Container(
+          width: MediaQuery.of(context).size.width * 0.3,
+          decoration: BoxDecoration(
+            color: prod.activeCategory == _categories[index]
+                ? Color(0xfffec609)
+                : Colors.white,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.black //Hex Color
+                      .withOpacity(0.4),
+                  offset: const Offset(1.1, 4.0),
+                  blurRadius: 6.0),
+            ],
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Image.asset(
+                img,
+                height: MediaQuery.of(context).size.height * 0.12,
               ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-          ],
+              SizedBox(
+                height: 5.0,
+              ),
+              Text(
+                title,
+                style: GoogleFonts.montserrat(
+                    color: prod.activeCategory == _categories[index]
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 7.0,
+              ),
+              CircleAvatar(
+                maxRadius: 15.0,
+                backgroundColor: prod.activeCategory == _categories[index]
+                    ? Colors.white
+                    : Colors.redAccent,
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 15.0,
+                  color: prod.activeCategory == _categories[index]
+                      ? Colors.black
+                      : Colors.white,
+                ),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -106,9 +92,11 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
       {int index,
       String title,
       String img,
-      double price,
+      int price,
       int qty,
-      MyStore store}) {
+      int weight,
+      int timesOrdered,
+      ProdProvider prod}) {
     return Stack(
       children: [
         Padding(
@@ -143,7 +131,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                             color: Color(0xfffec609),
                           ),
                           Text(
-                            "200 times ordered",
+                            "$timesOrdered times ordered",
                             style: GoogleFonts.montserrat(
                               color: Colors.black54,
                               fontSize: 14,
@@ -172,7 +160,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                             height: 5,
                           ),
                           Text(
-                            "Weight 540gr",
+                            "Weight $weight",
                             textAlign: TextAlign.end,
                             style: GoogleFonts.montserrat(
                               color: Colors.black54,
@@ -199,29 +187,33 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 InkWell(
+                                    //TODO: Remove Cart feature
                                     onTap: () {
                                       //remove product from cart based on qty
-                                      store.removeProductToCart(
-                                          store.products[index]);
+                                      prod.removeProductFromCart(
+                                          prod.oskProducts[index]);
                                     },
                                     child: qtyButton(icon: Icons.remove)),
                                 SizedBox(
                                   width: 4.0,
                                 ),
-                                Text(
-                                  qty.toString(),
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.white,
+                                Consumer<ProdProvider>(
+                                  builder: (_, prod, child) => Text(
+                                    prod.oskProducts[index].qty.toString(),
+                                    style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 4.0,
                                 ),
                                 InkWell(
+                                    //TODO: Add Cart feature
                                     onTap: () {
                                       //add product to cart
-                                      store.addProductToCart(
-                                          store.products[index]);
+                                      prod.addProductToCart(
+                                          prod.oskProducts[index]);
                                     },
                                     child: qtyButton(icon: Icons.add)),
                               ],
@@ -250,14 +242,14 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
         Positioned(
           right: 0,
           bottom: -5,
-          child: Hero(
-            tag: store.products[index].id,
-            child: Image.asset(
-              img,
-              height: MediaQuery.of(context).size.height * 0.30,
-              width: MediaQuery.of(context).size.width * 0.35,
-            ),
+          //TODO: HEro widget
+          child: CachedNetworkImage(
+            imageUrl:
+                'http://api.onestopkitchen.in/upload/featured_image/$img-b.png',
+            height: MediaQuery.of(context).size.height * 0.30,
+            width: MediaQuery.of(context).size.width * 0.35,
           ),
+          //  tag: prod.oskProducts[index].id,
         ),
       ],
     );
@@ -293,7 +285,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
             onTap: () => Scaffold.of(context).openDrawer(),
           ),
           InkWell(
-            onTap: () => Navigator.pushNamed(context, CartScreen.id),
+            //  onTap: () => Navigator.pushNamed(context, CartScreen.id),
             child: Container(
               height: 50.0,
               width: 50.0,
@@ -323,10 +315,23 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
     );
   }
 
+  // ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
-    var store = Provider.of<MyStore>(context); //listener
+    var prodOsk = Provider.of<ProdProvider>(context, listen: false);
+
+//TODO: Try to implement scrollController
+//    void getMore() {
+//      _scrollController.addListener(() {
+//        if (_scrollController.position.pixels ==
+//            _scrollController.position.maxScrollExtent) {
+//          prod.getTenOskProducts();
+//        }
+//      });
+//    }
+
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -355,7 +360,8 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                     child: Container(
                       child: Row(
                         children: [
-                          Icon(Icons.search),
+                          Icon(Icons
+                              .search), //For search when user enters his wish a new page will open displaying all his favorite items filtered from backend.
                           Container(
                             padding: EdgeInsets.only(left: 10.0, right: 10.0),
                             width: MediaQuery.of(context).size.width * 0.80,
@@ -389,11 +395,14 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                           padding: const EdgeInsets.only(
                               left: 10.0, right: 5.0, bottom: 5.0),
                           child: InkWell(
-                            onTap: () => _onCategorySelected(index),
+                            onTap: () => {
+                              prodOsk.setActiveCategory(_categories[index]),
+                            },
                             child: HCard(
                               index: index,
-                              title: osk_categories[index].title,
-                              img: osk_categories[index].img,
+                              title: _categories[index].title,
+                              img: _categories[index].img,
+                              prod: prodOsk,
                             ),
                           ),
                         );
@@ -401,31 +410,53 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
                     ),
                   ),
                   showText('Popular', 18),
-                  ListView.builder(
-                    itemCount: store.products.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: InkWell(
-                          onTap: () {
-                            //TODO: Try to implement in pushNamed way
-                            //Setting the active product
-                            store.setActiveProduct(store.products[index]);
-                            //Moving to detail page
-                            Navigator.pushNamed(context, FoodDetailScreen.id);
-                          },
-                          child: VCard(
-                              index: index,
-                              store: store,
-                              title: store.products[index].name,
-                              img: store.products[index].img,
-                              price: store.products[index].price,
-                              qty: store.products[index].qty),
-                        ),
-                      );
-                    },
+                  Consumer<ProdProvider>(
+                    builder: (_, prod, child) => FutureBuilder(
+                      future: prodOsk.activeCategory != null
+                          ? prodOsk.getProductsonCategory()
+                          : prodOsk.getTenOskProducts(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          return ListView.builder(
+                            itemCount: prodOsk.activeCategory != null
+                                ? prodOsk.cateProducts.length
+                                : prodOsk.oskProducts.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 10.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    prodOsk
+                                        .setActiveProduct(snapshot.data[index]);
+                                    Navigator.pushNamed(
+                                        context, FoodDetailScreen.id);
+                                  },
+                                  child: VCard(
+                                    index: index,
+                                    title: '${snapshot.data[index].name}',
+                                    price: snapshot.data[index].price,
+                                    qty: snapshot.data[index].qty,
+                                    weight: snapshot.data[index].weight,
+                                    timesOrdered:
+                                        snapshot.data[index].timesOrdered,
+                                    prod: prodOsk,
+                                    img: snapshot.data[index].img,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),

@@ -40,15 +40,17 @@ class AuthService {
       Map<String, String> headers = {"Content-Type": "application/json"};
       http.Response response = await http.post(registerUrl);
       if (response.statusCode == 200) {
-        print(response.body);
         Map<String, dynamic> result = jsonDecode(response.body);
         if (result != null) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('userInfo', "Registered");
+          print(
+              "Successfully registered user -> Status Code: ${response.statusCode}");
           return User.fromJson(result);
         }
       } else {
-        print("Error while registering user");
+        print(
+            "Error while registering user -> Status Code: ${response.statusCode}");
       }
     } catch (err) {
       print("Error in registering User with API: ${err}");
@@ -62,15 +64,18 @@ class AuthService {
       Map<String, String> headers = {"Content-Type": "application/json"};
       http.Response response = await http.get(loginUrl);
       if (response.statusCode == 200) {
-        print(response.body);
         Map<String, dynamic> result = jsonDecode(response.body);
         if (result != null) {
+          print(result);
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('userInfo', "LoggedIn");
+          print(
+              "Successfully Logged in -> Status Code: ${response.statusCode}");
           return User.fromJson(result);
         }
       } else {
-        print("Error while logging in user");
+        print(
+            "Error while logging in user -> Status Code: ${response.statusCode}");
       }
     } catch (err) {
       print("Error in logging in User with API: ${err}");

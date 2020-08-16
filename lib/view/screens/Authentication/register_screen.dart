@@ -39,7 +39,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         emailEditingController.clear();
         passwordEditingController.clear();
         contactEditingController.clear();
-        Navigator.pushNamed(context, BrandHomeScreen.id);
+        user == null
+            ? Navigator.pushReplacementNamed(context, RegisterScreen.id)
+            : Navigator.pushReplacementNamed(context, BrandHomeScreen.id);
       } else {
         setState(() {
           isLoading = false;
@@ -58,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final auth = Provider.of<AuthService>(context, listen: false);
       final user = await auth.signInWithGoogle();
       print("{${user.id}, ${user.name}");
-      Navigator.pushNamed(context, BrandHomeScreen.id);
+      Navigator.pushReplacementNamed(context, BrandHomeScreen.id);
     } catch (err) {
       print("UI Register error with Google: ${err}");
     }

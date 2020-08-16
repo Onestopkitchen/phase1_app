@@ -33,7 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
         final user = await auth.loginUserRequest();
         emailEditingController.clear();
         passwordEditingController.clear();
-        Navigator.pushNamed(context, BrandHomeScreen.id);
+        user == null
+            ? Navigator.pushReplacementNamed(context, LoginScreen.id)
+            : Navigator.pushReplacementNamed(context, BrandHomeScreen.id);
       } else {
         setState(() {
           isLoading = false;
@@ -52,7 +54,10 @@ class _LoginScreenState extends State<LoginScreen> {
       final auth = Provider.of<AuthService>(context, listen: false);
       final user = await auth.signInWithGoogle();
       print("{${user.id}, ${user.email}");
-      Navigator.pushNamed(context, BrandHomeScreen.id);
+
+      user == null
+          ? Navigator.pushReplacementNamed(context, LoginScreen.id)
+          : Navigator.pushReplacementNamed(context, BrandHomeScreen.id);
     } catch (err) {
       print("UI Register error with Google: ${err}");
     }

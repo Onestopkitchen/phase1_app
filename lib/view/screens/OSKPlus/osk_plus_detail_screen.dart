@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/view/screens/cart_screen.dart';
 
 class OskPlusDetailScreen extends StatefulWidget {
   static String id = 'osk_plus_detail_screen';
@@ -340,9 +339,9 @@ class _OskPlusDetailScreenState extends State<OskPlusDetailScreen> {
                                   ],
                                 ),
                                 InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, CartScreen.id);
-                                  },
+//                                  onTap: () {
+//                                    Navigator.pushNamed(context, CartScreen.id);
+//                                  },
                                   child: Container(
                                     height: 50,
                                     width: 150,
