@@ -274,138 +274,136 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     var prodCart = Provider.of<ProdProvider>(context);
     final _height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Builder(
-          builder: (context) => Column(
-            children: [
-              SizedBox(
-                height: 10.0,
-              ),
-              headerSection(context),
-              Container(
-                height: _height * 0.45,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16.0),
-                  bottomRight: Radius.circular(16.0),
-                )),
-                child: ListView.separated(
-                  itemCount: prodCart.cartProducts.length,
-                  itemBuilder: (_, index) {
-                    return VOrderCard(
-                      index: index,
-                      title: prodCart.cartProducts[index].name,
-                      img: prodCart.cartProducts[index].img,
-                      price: prodCart.cartProducts[index].price,
-                      qty: prodCart.cartProducts[index].qty,
-                      prodCart: prodCart,
-                    );
-                  },
-                  separatorBuilder: (_, index) => Divider(
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.black12,
-                  ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Builder(
+        builder: (context) => Column(
+          children: [
+            SizedBox(
+              height: 10.0,
+            ),
+            headerSection(context),
+            Container(
+              height: _height * 0.45,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16.0),
+                bottomRight: Radius.circular(16.0),
+              )),
+              child: ListView.separated(
+                itemCount: prodCart.cartProducts.length,
+                itemBuilder: (_, index) {
+                  return VOrderCard(
+                    index: index,
+                    title: prodCart.cartProducts[index].name,
+                    img: prodCart.cartProducts[index].img,
+                    price: prodCart.cartProducts[index].price,
+                    qty: prodCart.cartProducts[index].qty,
+                    prodCart: prodCart,
+                  );
+                },
+                separatorBuilder: (_, index) => Divider(
+                  indent: 20,
+                  endIndent: 20,
+                  color: Colors.black12,
                 ),
               ),
-              SizedBox(height: 10),
-              InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context, builder: buildBottomSheet);
-                },
-                child: Container(
-                  height: 50,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.local_play,
-                        size: 16,
-                        color: Color(0xfffec609),
+            ),
+            SizedBox(height: 10),
+            InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                    context: context, builder: buildBottomSheet);
+              },
+              child: Container(
+                height: 50,
+                width: 200,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      Icons.local_play,
+                      size: 16,
+                      color: Color(0xfffec609),
+                    ),
+                    Text(
+                      "Apply Coupons",
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+            Divider(
+              indent: 20,
+              endIndent: 20,
+              color: Colors.black87,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _chargesText(title: 'Item Total', price: 'Rs.300'),
+                    _chargesText(title: 'Delivery Charge', price: 'Rs.300'),
+                    _chargesText(title: 'GST Charge', price: 'Rs.300'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Total",
+                            style: GoogleFonts.montserrat(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87),
+                          ),
+                          Text(
+                            "Rs.900",
+                            style: GoogleFonts.montserrat(
+                                fontSize: 15, color: Colors.black87),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Apply Coupons",
+                    ),
+                    Container(
+                      height: 50,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        color: Color(0xfffec609),
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Center(
+                          child: Text(
+                        "Confirm Order",
                         style: GoogleFonts.montserrat(
                             fontSize: 15.0,
-                            color: Colors.white,
+                            color: Colors.black87,
                             fontWeight: FontWeight.w400),
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
+                      )),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 5.0,
-              ),
-              Divider(
-                indent: 20,
-                endIndent: 20,
-                color: Colors.black87,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _chargesText(title: 'Item Total', price: 'Rs.300'),
-                      _chargesText(title: 'Delivery Charge', price: 'Rs.300'),
-                      _chargesText(title: 'GST Charge', price: 'Rs.300'),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Total",
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black87),
-                            ),
-                            Text(
-                              "Rs.900",
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 15, color: Colors.black87),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          color: Color(0xfffec609),
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Center(
-                            child: Text(
-                          "Confirm Order",
-                          style: GoogleFonts.montserrat(
-                              fontSize: 15.0,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w400),
-                        )),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

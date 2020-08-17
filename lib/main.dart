@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:osk_dev_app/provider/authProvider.dart';
 import 'package:osk_dev_app/provider/prodProvider.dart';
+import 'package:osk_dev_app/view/screens/Authentication/mobile_otp_screen.dart';
 import 'package:osk_dev_app/view/screens/HealthyCo/healthy_co_dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'model/services/authService.dart';
-import 'view/screens/Authentication/login_screen.dart';
+import 'view/screens/Authentication/mobile_number_screen.dart';
 import 'view/screens/Authentication/register_screen.dart';
 import 'view/screens/HealthyCo/healthy_co_auth.dart';
 import 'view/screens/HealthyCo/healthy_co_diet_preference.dart';
@@ -51,11 +52,11 @@ class MyApp extends StatelessWidget {
     var userInfo = prefs.getString('userInfo');
     return MultiProvider(
       providers: [
-        Provider<AuthService>(
-          create: (context) => AuthService(),
-        ),
         ChangeNotifierProvider<ProdProvider>(
           create: (context) => ProdProvider(),
+        ),
+        ChangeNotifierProvider<AuthProvider>(
+          create: (context) => AuthProvider(),
         ),
       ],
       child: MaterialApp(
@@ -65,7 +66,8 @@ class MyApp extends StatelessWidget {
         routes: {
           SplashScreen.id: (context) => SplashScreen(),
           WelcomeScreen.id: (context) => WelcomeScreen(),
-          LoginScreen.id: (context) => LoginScreen(),
+          MobileNumberScreen.id: (context) => MobileNumberScreen(),
+          MobileOtpScreen.id: (context) => MobileOtpScreen(),
           RegisterScreen.id: (context) => RegisterScreen(),
           BrandHomeScreen.id: (context) => BrandHomeScreen(),
           OskMenuScreen.id: (context) => OskMenuScreen(),

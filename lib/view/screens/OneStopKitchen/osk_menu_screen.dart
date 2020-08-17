@@ -332,8 +332,7 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
 //      });
 //    }
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       drawer: Drawer(),
       body: Builder(
@@ -464,6 +463,6 @@ class _OskMenuScreenState extends State<OskMenuScreen> {
           ],
         ),
       ),
-    ));
+    );
   }
 }

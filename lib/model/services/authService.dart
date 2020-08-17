@@ -1,138 +1,106 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:osk_dev_app/model/core/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final FirebaseAuth _authFirebase = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  String _name;
-  String _email;
-  String _phone;
-  String _password;
+  String phoneno;
+  String name;
+  String email;
 
-  AuthService() {
-    this._name;
-    this._email;
-    this._phone;
-    this._password;
+  Future getOtp() async {
+    try {
+      String getOtpUrl =
+          "http://api.onestopkitchen.in/api/sendotp?number=$phoneno";
+      Map<String, String> headers = {"Content-Type": "application/json"};
+      http.Response response = await http.get(getOtpUrl, headers: headers);
+      if (response.statusCode == 200) {
+        print("Success -> Status Code: ${response.statusCode}");
+        print(response.body);
+        final result = await jsonDecode(response.body);
+        return result;
+      } else {
+        print("Error in getting otp -> Status Code: ${response.statusCode}");
+      }
+    } catch (err) {
+      print("Error in getting Otp using API : ${err}");
+    }
   }
 
-  void set setUserName(String name) => this._name = name;
-
-  void set setUserEmail(String email) => this._email = email;
-
-  void set setUserPhone(String phone) => this._phone = phone;
-
-  void set setUserPassword(String password) => this._password = password;
-
-  //1. Pass user data from UI to Provider AuthService
-  //2. AuthService Provider converts data to string (either using toJSON method)
-  //3. Post the user data to the server.
-
-  Future<User> registerUserRequest() async {
+  Future registerUser() async {
     try {
-      String registerUrl =
-          "http://api.onestopkitchen.in/api/registeruser?password=$_password&email=$_email&mobile=${int.parse(_phone)}&name=$_name";
+      String registerUserUrl =
+          "http://api.onestopkitchen.in/api/registeruser?number=${int.parse(phoneno)}";
       Map<String, String> headers = {"Content-Type": "application/json"};
-      http.Response response = await http.post(registerUrl);
+      http.Response response = await http.post(registerUserUrl);
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> result = jsonDecode(response.body);
-        if (result != null) {
+        print("Success -> Status Code: ${response.statusCode}");
+        final user_id = await jsonDecode(response.body);
+        return user_id;
+      } else {
+        print(
+            "Error in registering user-> Status Code: ${response.statusCode}");
+      }
+    } catch (err) {
+      print("Error in registering user using API : ${err}");
+    }
+  }
+
+  Future<UserClass> addtoUser() async {
+    try {
+      print("$name $email $phoneno");
+      String addtoUserUrl =
+          "http://api.onestopkitchen.in/api/addtouser?number=${int.parse(phoneno)}&email=$email&name=$name";
+      Map<String, String> headers = {"Content-Type": "application/json"};
+      http.Response response = await http.post(addtoUserUrl);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print("Success -> Status Code: ${response.statusCode}");
+        final users = userFromJson(response.body);
+        if (users != null) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('userInfo', "Registered");
-          print(
-              "Successfully registered user -> Status Code: ${response.statusCode}");
-          return User.fromJson(result);
+          return users.user;
         }
       } else {
-        print(
-            "Error while registering user -> Status Code: ${response.statusCode}");
+        print("Error in add to user-> Status Code: ${response.statusCode}");
       }
     } catch (err) {
-      print("Error in registering User with API: ${err}");
+      print("Error in add to user using API : ${err}");
     }
   }
 
-  Future<User> loginUserRequest() async {
+  Future<UserClass> getUser() async {
     try {
-      String loginUrl =
-          "http://api.onestopkitchen.in/api/getuser?email=$_email&password=$_password";
+      String getUserUrl =
+          "http://api.onestopkitchen.in/api/getuser?number=$phoneno";
       Map<String, String> headers = {"Content-Type": "application/json"};
-      http.Response response = await http.get(loginUrl);
+      http.Response response = await http.get(getUserUrl, headers: headers);
       if (response.statusCode == 200) {
-        Map<String, dynamic> result = jsonDecode(response.body);
-        if (result != null) {
-          print(result);
+        print("Success -> Status Code: ${response.statusCode}");
+        final users = userFromJson(response.body);
+        if (users != null) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('userInfo', "LoggedIn");
-          print(
-              "Successfully Logged in -> Status Code: ${response.statusCode}");
-          return User.fromJson(result);
+          return users.user;
         }
       } else {
-        print(
-            "Error while logging in user -> Status Code: ${response.statusCode}");
+        print("Error in getting user-> Status Code: ${response.statusCode}");
       }
     } catch (err) {
-      print("Error in logging in User with API: ${err}");
+      print("Error in getting user using API : ${err}");
     }
   }
 
-  Future<bool> logoutUserRequest() async {
+  Future<bool> logoutUser() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove('userInfo');
-      print(prefs.getString('userInfo'));
       return true;
     } catch (err) {
       print("Error in logging out User through shared preferences: ${err}");
-    }
-  }
-
-  Future<User> _userFromFirebase(FirebaseUser user) async {
-    if (user != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('userInfo', "LoggedIn");
-      return User(
-          id: user.uid,
-          email: user.email,
-          name: user.displayName,
-          phone: user.phoneNumber);
-    } else {
-      return null;
-    }
-  }
-
-  Future<User> signInWithGoogle() async {
-    try {
-      GoogleSignInAccount googleSignInAccount =
-          await _googleSignIn.signIn(); //Getting User account
-      GoogleSignInAuthentication
-          googleSignInAuthentication = //Authenticating User Account
-          await googleSignInAccount.authentication;
-      AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
-      AuthResult result = await _authFirebase.signInWithCredential(credential);
-      FirebaseUser firebaseUser = result.user;
-      return _userFromFirebase(firebaseUser);
-    } catch (err) {
-      print("Error in signInWithGoogle: ${err}");
-      return null;
-    }
-  }
-
-  Future signOutWithGoogle() async {
-    try {
-      return await _googleSignIn.signOut();
-    } catch (err) {
-      print("Error in signOut : ${err}");
-      return null;
     }
   }
 }

@@ -212,7 +212,7 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
           bottom: -5,
           child: CachedNetworkImage(
             imageUrl:
-                'http://api.onestopkitchen.in/upload/featured_image/$img.png',
+                'http://api.onestopkitchen.in/upload/featured_image/$img-b.png',
             height: MediaQuery.of(context).size.height * 0.30,
             width: MediaQuery.of(context).size.width * 0.35,
           ),
@@ -225,105 +225,101 @@ class _HobMenuScreenState extends State<HobMenuScreen> {
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     var prodHob = Provider.of<ProdProvider>(context, listen: false);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        drawer: Drawer(),
-        body: Builder(
-          builder: (context) => Stack(
-            children: [
-              Positioned(
-                  top: -_height * .15,
-                  right: -MediaQuery.of(context).size.width * .4,
-                  child: BezierContainer()),
-              Container(
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    headerSection(context),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    showText('House of Biryani', 22),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, bottom: 10.0, top: 10.0),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Icon(Icons.search),
-                            Container(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              width: MediaQuery.of(context).size.width * 0.80,
-                              child: TextField(
-                                controller: _searchController,
-                                cursorColor: Color(0xfffec609),
-                                decoration: InputDecoration(
-                                  hintText: "Search your food...",
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.black45),
-                                  ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      drawer: Drawer(),
+      body: Builder(
+        builder: (context) => Stack(
+          children: [
+            Positioned(
+                top: -_height * .15,
+                right: -MediaQuery.of(context).size.width * .4,
+                child: BezierContainer()),
+            Container(
+              child: ListView(
+                children: [
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  headerSection(context),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  showText('House of Biryani', 22),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, bottom: 10.0, top: 10.0),
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Icon(Icons.search),
+                          Container(
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            width: MediaQuery.of(context).size.width * 0.80,
+                            child: TextField(
+                              controller: _searchController,
+                              cursorColor: Color(0xfffec609),
+                              decoration: InputDecoration(
+                                hintText: "Search your food...",
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black45),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    showText('Popular', 18),
-                    FutureBuilder(
-                      future: prodHob.getTenHobProducts(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else {
-                          return ListView.builder(
-                            itemCount: prodHob.hobProducts.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, right: 10.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    prodHob
-                                        .setActiveProduct(snapshot.data[index]);
-                                    Navigator.pushNamed(
-                                        context, FoodDetailScreen.id);
-                                  },
-                                  child: VCard(
-                                    index: index,
-                                    title: '${snapshot.data[index].name}',
-                                    price: snapshot.data[index].price,
-                                    qty: snapshot.data[index].qty,
-                                    weight: snapshot.data[index].weight,
-                                    timesOrdered:
-                                        snapshot.data[index].timesOrdered,
-                                    prod: prodHob,
-                                    img: snapshot.data[index].img,
-                                  ),
+                  ),
+                  showText('Popular', 18),
+                  FutureBuilder(
+                    future: prodHob.getTenHobProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return ListView.builder(
+                          itemCount: prodHob.hobProducts.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0),
+                              child: InkWell(
+                                onTap: () {
+                                  prodHob
+                                      .setActiveProduct(snapshot.data[index]);
+                                  Navigator.pushNamed(
+                                      context, FoodDetailScreen.id);
+                                },
+                                child: VCard(
+                                  index: index,
+                                  title: '${snapshot.data[index].name}',
+                                  price: snapshot.data[index].price,
+                                  qty: snapshot.data[index].qty,
+                                  weight: snapshot.data[index].weight,
+                                  timesOrdered:
+                                      snapshot.data[index].timesOrdered,
+                                  prod: prodHob,
+                                  img: snapshot.data[index].img,
                                 ),
-                              );
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

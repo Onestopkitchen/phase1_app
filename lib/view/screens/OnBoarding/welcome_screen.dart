@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'file:///E:/ONE_STOP_KITCHEN/osk_dev_app/lib/view/screens/Authentication/login_screen.dart';
-import 'file:///E:/ONE_STOP_KITCHEN/osk_dev_app/lib/view/screens/Authentication/register_screen.dart';
+import 'package:osk_dev_app/provider/authProvider.dart';
+import 'package:osk_dev_app/view/screens/Authentication/mobile_number_screen.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
@@ -47,36 +47,37 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 
-  Widget _label() {
-    return Container(
-        margin: EdgeInsets.only(top: 40, bottom: 20),
-        child: Column(
-          children: <Widget>[
-//            Text(
-//              'Quick login with Touch ID',
-//              style: TextStyle(color: Color(0xFFFF9B00), fontSize: 17),
-//            ),
-            SizedBox(
-              height: 20,
-            ),
-            Icon(Icons.fingerprint, size: 60, color: Color(0xfffec609)),
+//  Widget _label() {
+//    return Container(
+//        margin: EdgeInsets.only(top: 40, bottom: 20),
+//        child: Column(
+//          children: <Widget>[
+////            Text(
+////              'Quick login with Touch ID',
+////              style: TextStyle(color: Color(0xFFFF9B00), fontSize: 17),
+////            ),
 //            SizedBox(
 //              height: 20,
 //            ),
-//            Text(
-//              'Touch ID',
-//              style: TextStyle(
-//                color: Color(0xFFFF9B00),
-//                fontSize: 15,
-//                decoration: TextDecoration.underline,
-//              ),
-//            ),
-          ],
-        ));
-  }
+//            Icon(Icons.fingerprint, size: 60, color: Color(0xfffec609)),
+////            SizedBox(
+////              height: 20,
+////            ),
+////            Text(
+////              'Touch ID',
+////              style: TextStyle(
+////                color: Color(0xFFFF9B00),
+////                fontSize: 15,
+////                decoration: TextDecoration.underline,
+////              ),
+////            ),
+//          ],
+//        ));
+//  }
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -93,10 +94,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   spreadRadius: 2)
             ],
           ),
-//              gradient: LinearGradient(
-//                  begin: Alignment.topCenter,
-//                  end: Alignment.bottomCenter,
-//                  colors: [Color(0xfffbb448), Color(0xffe46b10)])),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +104,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, LoginScreen.id);
+                  Navigator.pushNamed(context, MobileNumberScreen.id);
                 },
                 child: _authButton(
                   text: 'Login',
@@ -120,7 +117,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, RegisterScreen.id);
+                  Navigator.pushNamed(context, MobileNumberScreen.id);
                 },
                 child: _authButton(
                   text: 'Register Now',
@@ -129,10 +126,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   // border: Border.all(color: Colors.white, width: 2)
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              _label(),
             ],
           ),
         ),

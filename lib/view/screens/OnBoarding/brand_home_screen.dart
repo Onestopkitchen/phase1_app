@@ -2,10 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:osk_dev_app/model/services/authService.dart';
-import 'package:osk_dev_app/view/screens/Authentication/login_screen.dart';
+import 'package:osk_dev_app/provider/authProvider.dart';
 import 'package:osk_dev_app/view/screens/HealthyCo/healthy_co_goal_screen.dart';
 import 'package:osk_dev_app/view/screens/OSKPlus/osk_plus_category_screen.dart';
+import 'package:osk_dev_app/view/screens/OnBoarding/welcome_screen.dart';
 import 'package:osk_dev_app/view/widgets/bezierContainer.dart';
 import 'package:provider/provider.dart';
 
@@ -26,18 +26,18 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
     'assets/images/fruits_banner.jpg',
   ];
 
-  logoutUser(context) async {
-    try {
-      final auth = Provider.of<AuthService>(context,
-          listen: false); //TODO: Check this out
-      bool isLoggedOut = await auth.logoutUserRequest();
-      isLoggedOut
-          ? Navigator.pushReplacementNamed(context, LoginScreen.id)
-          : null;
-    } catch (err) {
-      print("UI Logout error: ${err}");
-    }
-  }
+//  logoutUser(context) async {
+//    try {
+//      final auth = Provider.of<AuthService>(context,
+//          listen: false); //TODO: Check this out
+//      bool isLoggedOut = await auth.logoutUserRequest();
+//      isLoggedOut
+//          ? Navigator.pushReplacementNamed(context, LoginScreen.id)
+//          : null;
+//    } catch (err) {
+//      print("UI Logout error: ${err}");
+//    }
+//  }
 
   Widget HCard(
       {Color start,
@@ -242,6 +242,17 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
     );
   }
 
+  logoutUser(context) async {
+    try {
+      final auth = Provider.of<AuthProvider>(context,
+          listen: false); //TODO: Check this out
+      bool isLoggedOut = await auth.logoutUser();
+      isLoggedOut ? Navigator.pushNamed(context, WelcomeScreen.id) : null;
+    } catch (err) {
+      print("UI Logout error: ${err}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> imageSliders = imgList
@@ -264,191 +275,188 @@ class _BrandHomeScreenState extends State<BrandHomeScreen> {
         )
         .toList();
     final height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          drawer: Drawer(),
-          body: Builder(
-            builder: (context) => Stack(
-              children: [
-                Positioned(
-                    top: -height * .15,
-                    right: -MediaQuery.of(context).size.width * .4,
-                    child: BezierContainer()),
-                Container(
-                  child: ListView(
-                    children: [
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      headerSection(),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      CarouselSlider(
-                        options: CarouselOptions(
-                            autoPlay: true,
-                            aspectRatio: 2.25,
-                            enlargeCenterPage: true),
-                        items: imageSliders,
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20.0, bottom: 10.0),
-                        child: Text(
-                          "Our Products",
-                          style: GoogleFonts.lato(
-                            color: Colors.brown[800],
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w600,
-                          ),
+    return Scaffold(
+        backgroundColor: Colors.white,
+        drawer: Drawer(),
+        body: Builder(
+          builder: (context) => Stack(
+            children: [
+              Positioned(
+                  top: -height * .15,
+                  right: -MediaQuery.of(context).size.width * .4,
+                  child: BezierContainer()),
+              Container(
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    headerSection(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    CarouselSlider(
+                      options: CarouselOptions(
+                          autoPlay: true,
+                          aspectRatio: 2.25,
+                          enlargeCenterPage: true),
+                      items: imageSliders,
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
+                      child: Text(
+                        "Our Products",
+                        style: GoogleFonts.lato(
+                          color: Colors.brown[800],
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Container(
-                        height: MediaQuery.of(context).size.height / 3,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, right: 5.0),
-                              child: InkWell(
-                                onTap: () => null,
-                                child: HCard(
-                                    start: Color(0xffFA7D82),
-                                    end: Color(0xffFFB295),
-                                    title: 'Osk Products',
-                                    img: 'assets/images/breakfast.png',
-                                    i1: 'Bread',
-                                    i2: 'Peanut butter',
-                                    i3: 'Apple'),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, right: 5.0),
-                              child: HCard(
-                                  start: Color(0xff738AE6),
-                                  end: Color(0xff5C5EDD),
-                                  title: 'House of Biryani',
-                                  img: 'assets/images/lunch.png',
-                                  i3: 'Avocado',
-                                  i2: 'Veggies',
-                                  i1: 'Salmon'),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, right: 5.0),
-                              child: HCard(
-                                start: Color(0xffFE95B6),
-                                end: Color(0xffFF5287),
-                                title: 'Healthy Co',
-                                img: 'assets/images/snack.png',
-                                i1: 'Recommended',
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, right: 5.0),
-                              child: HCard(
-                                  start: Color(0xff6F72CA),
-                                  end: Color(0xff1E1466),
-                                  title: 'Dabbaco',
-                                  img: 'assets/images/dinner.png',
-                                  i2: 'Recommended'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20.0, bottom: 10.0, top: 10.0),
-                        child: Text(
-                          "Our Brands",
-                          style: GoogleFonts.lato(
-                            color: Colors.brown[800],
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      ListView(
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 3,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
                         children: [
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
+                                const EdgeInsets.only(left: 10.0, right: 5.0),
                             child: InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                  context, OskMenuScreen.id),
-                              child: VCard(
-                                  start: Color(0xfff9d660),
-                                  end: Color(0xfffceca8),
-                                  title: 'One Stop Kitchen',
-                                  img: 'assets/images/logo.png'),
+                              onTap: () => null,
+                              child: HCard(
+                                  start: Color(0xffFA7D82),
+                                  end: Color(0xffFFB295),
+                                  title: 'Osk Products',
+                                  img: 'assets/images/breakfast.png',
+                                  i1: 'Bread',
+                                  i2: 'Peanut butter',
+                                  i3: 'Apple'),
                             ),
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                  context, HobMenuScreen.id),
-                              child: VCard(
-                                  start: Color(0xfff1d884),
-                                  end: Color(0xffd3a13c),
-                                  title: 'House of Biryani',
-                                  img: 'assets/images/HOB.png'),
+                                const EdgeInsets.only(left: 10.0, right: 5.0),
+                            child: HCard(
+                                start: Color(0xff738AE6),
+                                end: Color(0xff5C5EDD),
+                                title: 'House of Biryani',
+                                img: 'assets/images/lunch.png',
+                                i3: 'Avocado',
+                                i2: 'Veggies',
+                                i1: 'Salmon'),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10.0, right: 5.0),
+                            child: HCard(
+                              start: Color(0xffFE95B6),
+                              end: Color(0xffFF5287),
+                              title: 'Healthy Co',
+                              img: 'assets/images/snack.png',
+                              i1: 'Recommended',
                             ),
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                  context, HealthyCoGoalScreen.id),
-                              child: VCard(
-                                  start: Color(0xffc7fa7d),
-                                  end: Color(0xff92f38e),
-                                  title: 'Healthy Co',
-                                  img: 'assets/images/Healthyco.png'),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: VCard(
-                                start: Color(0xfff1d884),
-                                end: Color(0xffd3a13c),
+                                const EdgeInsets.only(left: 10.0, right: 5.0),
+                            child: HCard(
+                                start: Color(0xff6F72CA),
+                                end: Color(0xff1E1466),
                                 title: 'Dabbaco',
-                                img: 'assets/images/Dabbaco.png'),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                  context, OskPlusCategoryScreen.id),
-                              child: VCard(
-                                  start: Color(0xffc7fa7d),
-                                  end: Color(0xff92f38e),
-                                  title: 'Osk Plus',
-                                  img: 'assets/images/OskPlus.png'),
-                            ),
+                                img: 'assets/images/dinner.png',
+                                i2: 'Recommended'),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, bottom: 10.0, top: 10.0),
+                      child: Text(
+                        "Our Brands",
+                        style: GoogleFonts.lato(
+                          color: Colors.brown[800],
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: InkWell(
+                            onTap: () =>
+                                Navigator.pushNamed(context, OskMenuScreen.id),
+                            child: VCard(
+                                start: Color(0xfff9d660),
+                                end: Color(0xfffceca8),
+                                title: 'One Stop Kitchen',
+                                img: 'assets/images/logo.png'),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: InkWell(
+                            onTap: () =>
+                                Navigator.pushNamed(context, HobMenuScreen.id),
+                            child: VCard(
+                                start: Color(0xfff1d884),
+                                end: Color(0xffd3a13c),
+                                title: 'House of Biryani',
+                                img: 'assets/images/HOB.png'),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                                context, HealthyCoGoalScreen.id),
+                            child: VCard(
+                                start: Color(0xffc7fa7d),
+                                end: Color(0xff92f38e),
+                                title: 'Healthy Co',
+                                img: 'assets/images/Healthyco.png'),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: VCard(
+                              start: Color(0xfff1d884),
+                              end: Color(0xffd3a13c),
+                              title: 'Dabbaco',
+                              img: 'assets/images/Dabbaco.png'),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                                context, OskPlusCategoryScreen.id),
+                            child: VCard(
+                                start: Color(0xffc7fa7d),
+                                end: Color(0xff92f38e),
+                                title: 'Osk Plus',
+                                img: 'assets/images/OskPlus.png'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
-    );
+              ),
+            ],
+          ),
+        ));
   }
 }

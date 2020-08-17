@@ -216,189 +216,187 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var prodDetail = Provider.of<ProdProvider>(context);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Builder(
-          builder: (context) => Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 5.0,
-                ),
-                headerSection(context),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Column(
-                      children: [
-                        titleSection(prodDetail.activeProduct.name),
-                        descriptionSection(
-                            prodDetail.activeProduct.description),
-                      ],
-                    ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Builder(
+        builder: (context) => Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 5.0,
+              ),
+              headerSection(context),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  child: Column(
+                    children: [
+                      titleSection(prodDetail.activeProduct.name),
+                      descriptionSection(
+                          prodDetail.activeProduct.description),
+                    ],
                   ),
                 ),
-                imageSection(
-                  prodDetail.activeProduct.img,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          height: 10,
+              ),
+              imageSection(
+                prodDetail.activeProduct.img,
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context, builder: buildBottomSheet);
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Color(0xfffec609),
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Center(
+                              child: Text(
+                            "+ Add Variants",
+                            style: GoogleFonts.montserrat(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          )),
                         ),
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                                context: context, builder: buildBottomSheet);
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 150,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 30,
                             decoration: BoxDecoration(
                               color: Color(0xfffec609),
                               borderRadius: BorderRadius.circular(16.0),
                             ),
-                            child: Center(
-                                child: Text(
-                              "+ Add Variants",
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            )),
+                            child: IconButton(
+                              onPressed: () {
+                                //remove product from cart based on qty
+                                prodDetail.removeProductFromCart(
+                                    prodDetail.activeProduct);
+                              },
+                              icon: Icon(
+                                Icons.remove,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                color: Color(0xfffec609),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  //remove product from cart based on qty
-                                  prodDetail.removeProductFromCart(
-                                      prodDetail.activeProduct);
-                                },
-                                icon: Icon(
-                                  Icons.remove,
-                                  size: 14,
-                                  color: Colors.white,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20.0, right: 20.0),
+                            child: Consumer<ProdProvider>(
+                              builder: (_, prodDetail, child) => Text(
+                                prodDetail.activeProduct.qty.toString(),
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 20,
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20.0, right: 20.0),
-                              child: Consumer<ProdProvider>(
-                                builder: (_, prodDetail, child) => Text(
-                                  prodDetail.activeProduct.qty.toString(),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 20,
+                          ),
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Color(0xfffec609),
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                //add product to cart
+                                prodDetail.addProductToCart(
+                                    prodDetail.activeProduct);
+                              },
+                              icon: Icon(
+                                Icons.add,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Price",
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      color: Colors.black87,
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                color: Color(0xfffec609),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  //add product to cart
-                                  prodDetail.addProductToCart(
-                                      prodDetail.activeProduct);
-                                },
-                                icon: Icon(
-                                  Icons.add,
-                                  size: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Price",
-                                      style: GoogleFonts.montserrat(
+                                  Text(
+                                    prodDetail.activeProduct.price.toString(),
+                                    style: GoogleFonts.montserrat(
                                         fontSize: 16,
                                         color: Colors.black87,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, CartScreen.id);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 150,
+                                  padding:
+                                      EdgeInsets.only(left: 10, right: 10),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xfffec609),
+                                      borderRadius:
+                                          BorderRadius.circular(16.0)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Icon(Icons.shopping_cart),
+                                      Text(
+                                        "Go to Cart",
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w600),
                                       ),
-                                    ),
-                                    Text(
-                                      prodDetail.activeProduct.price.toString(),
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 16,
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, CartScreen.id);
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    width: 150,
-                                    padding:
-                                        EdgeInsets.only(left: 10, right: 10),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xfffec609),
-                                        borderRadius:
-                                            BorderRadius.circular(16.0)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Icon(Icons.shopping_cart),
-                                        Text(
-                                          "Go to Cart",
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              color: Colors.black87,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
